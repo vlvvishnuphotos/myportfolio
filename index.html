@@ -401,10 +401,509 @@ body{font-size:16px}
 .experienceScrollHint span{position:absolute;left:0;top:0;height:100%;width:24px;border-radius:10px;background:rgba(40,55,48,.55);transform:translateX(0);transition:transform .15s ease}
 @media(max-width:760px){#experienceGrid{gap:14px!important;padding-bottom:13px!important}#experienceGrid .experienceCard{flex-basis:82vw!important;width:82vw!important}}
 
+
+/* Experience rail: keep every backend experience and make overflow intentional. */
+#experienceGrid{
+  width:100% !important;
+  max-width:100% !important;
+  display:flex !important;
+  flex-direction:row !important;
+  flex-wrap:nowrap !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  gap:18px !important;
+  padding:8px 8px 15px !important;
+  margin:0 !important;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none !important;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-x;
+}
+#experienceGrid::-webkit-scrollbar{display:none !important}
+#experienceGrid .experienceCard{
+  display:block !important;
+  flex:0 0 330px !important;
+  width:330px !important;
+  min-width:330px !important;
+  scroll-snap-align:start;
+}
+@media(max-width:760px){
+  #experienceGrid{gap:14px !important}
+  #experienceGrid .experienceCard{
+    flex:0 0 82vw !important;
+    width:82vw !important;
+    min-width:82vw !important;
+  }
+}
+
+
+/* Case studies — remove the green/orange/pink border treatment. */
+#caseGrid .project{
+  border:1px solid rgba(35,45,40,.12) !important;
+  box-shadow:0 10px 28px rgba(25,35,30,.06) !important;
+  transition:transform .28s ease, box-shadow .28s ease, border-color .28s ease !important;
+}
+#caseGrid .project:hover{
+  transform:translateY(-5px) !important;
+  border-color:rgba(35,45,40,.20) !important;
+  box-shadow:0 18px 38px rgba(25,35,30,.11) !important;
+}
+.dark #caseGrid .project{
+  border-color:rgba(255,255,255,.13) !important;
+  box-shadow:0 12px 30px rgba(0,0,0,.22) !important;
+}
+.dark #caseGrid .project:hover{
+  border-color:rgba(255,255,255,.24) !important;
+  box-shadow:0 20px 44px rgba(0,0,0,.30) !important;
+}
+
+/* Figma/whiteboard-style colored collaborator cursor */
+#cheekyCursor{
+  position:fixed;
+  z-index:99999;
+  pointer-events:none;
+  opacity:0;
+  transform:translate3d(7px,7px,0);
+  transition:opacity .16s ease;
+  display:flex;
+  align-items:flex-start;
+  gap:0;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.16));
+}
+#cheekyCursor.show{opacity:1}
+#cheekyCursor .cursorArrow{
+  width:0;height:0;
+  border-top:0 solid transparent;
+  border-bottom:13px solid transparent;
+  border-left:13px solid #7C3AED;
+  transform:rotate(-20deg);
+  position:relative;
+  margin-top:2px;
+}
+#cheekyCursor .cursorArrow:after{
+  content:"";
+  position:absolute;
+  left:-11px;top:-1px;
+  width:2px;height:14px;
+  background:#fff;
+  transform:rotate(22deg);
+  transform-origin:top;
+}
+#cheekyCursor .cursorName{
+  margin:5px 0 0 -1px;
+  padding:5px 9px 5px 8px;
+  border-radius:5px 8px 8px 8px;
+  background:#7C3AED;
+  color:#fff;
+  font:700 10px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  white-space:nowrap;
+  letter-spacing:.01em;
+}
+/* Compact, event-driven sunshine sticky */
+#themeSticky{
+  position:fixed;
+  z-index:9990;
+  right:14px;
+  top:88px;
+  width:min(205px,calc(100vw - 28px));
+  padding:11px 12px 10px;
+  border:1px solid rgba(151,111,0,.18);
+  border-radius:4px 11px 11px 11px;
+  background:#FFF3A6;
+  color:#292611;
+  box-shadow:0 10px 24px rgba(122,91,0,.15);
+  transform:translate3d(120%,0,0) rotate(2deg);
+  opacity:0;
+  pointer-events:none;
+  transition:transform .42s cubic-bezier(.2,.8,.2,1),opacity .28s ease,box-shadow .25s ease;
+}
+#themeSticky.is-visible{
+  transform:translate3d(0,0,0) rotate(-.5deg);
+  opacity:1;
+  pointer-events:auto;
+}
+#themeSticky:before{
+  content:"";
+  position:absolute;
+  top:-8px;
+  right:14px;
+  width:34px;
+  height:13px;
+  background:#F5D76E;
+  border-radius:2px 2px 0 0;
+  transform:rotate(2deg);
+}
+#themeSticky:after{
+  content:"☀";
+  position:absolute;
+  top:9px;
+  right:10px;
+  font-size:15px;
+  opacity:.20;
+}
+#themeSticky:hover{
+  box-shadow:0 14px 30px rgba(122,91,0,.20);
+}
+#themeSticky .themeNoteClose,
+#mobileCaseSticky .caseStickyClose{
+  position:absolute;
+  top:6px;
+  right:7px;
+  width:18px;
+  height:18px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:inherit;
+  opacity:.48;
+  font:700 13px/18px system-ui,sans-serif;
+  cursor:pointer;
+}
+#themeSticky .themeNoteClose:hover,
+#mobileCaseSticky .caseStickyClose:hover{opacity:.9;background:rgba(0,0,0,.06)}
+#themeSticky .themeNoteLabel{
+  font:800 9px/1.1 system-ui,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  opacity:.48;
+  margin-bottom:6px;
+}
+#themeSticky .themeNoteText{
+  font:750 11px/1.32 system-ui,sans-serif;
+  margin:0 18px 8px 0;
+}
+#themeSticky button{
+  border:0;
+  border-radius:6px;
+  padding:6px 8px;
+  font:750 9px/1 system-ui,sans-serif;
+  cursor:pointer;
+  background:#292611;
+  color:#FFF9D7;
+}
+.dark #themeSticky{background:#FFF3A6;color:#292611}
+
+/* Mobile: keep the theme note low and compact, and add a separate case-study prompt. */
+@media(max-width:760px){
+  #cheekyCursor{display:none}
+  #themeSticky{
+    right:10px;
+    top:auto;
+    bottom:12px;
+    width:min(184px,calc(100vw - 24px));
+    padding:9px 10px 9px;
+    transform:translate3d(120%,0,0) rotate(2deg);
+  }
+  #themeSticky.is-visible{
+    transform:translate3d(0,0,0) rotate(-.5deg);
+  }
+  #themeSticky .themeNoteText{font-size:10px;margin-bottom:7px}
+  #themeSticky button{padding:6px 7px;font-size:8px}
+
+  #mobileCaseSticky{
+    position:fixed;
+    z-index:9989;
+    left:auto;
+    right:10px;
+    bottom:10px;
+    width:min(190px,calc(100vw - 24px));
+    padding:9px 10px;
+    border-radius:12px;
+    background:rgba(255,255,255,.96);
+    border:1px solid rgba(35,45,40,.12);
+    box-shadow:0 12px 28px rgba(20,30,25,.16);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    transform:translate3d(0,130%,0);
+    opacity:0;
+    pointer-events:none;
+    transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .25s ease;
+  }
+  #mobileCaseSticky.is-visible{
+    transform:translate3d(0,0,0);
+    opacity:1;
+    pointer-events:auto;
+  }
+  #mobileCaseSticky .caseStickyText{
+    flex:1;
+    font:750 10px/1.25 system-ui,sans-serif;
+  }
+  #mobileCaseSticky .caseStickyButton{
+    flex:none;
+    border:0;
+    border-radius:7px;
+    padding:8px 9px;
+    background:#202521;
+    color:#fff;
+    font:750 9px/1 system-ui,sans-serif;
+  }
+  .dark #mobileCaseSticky{
+    background:rgba(30,34,31,.96);
+    color:#fff;
+    border-color:rgba(255,255,255,.12);
+  }
+  .dark #mobileCaseSticky .caseStickyButton{background:#fff;color:#202521}
+}
+/* Final mobile behavior: compact bottom notes + clean case-study cards. */
+@media(max-width:760px){
+  #cheekyCursor{display:none}
+
+  /* Theme sticky: compact, always anchored to the bottom, never full-height. */
+  #themeSticky{
+    position:fixed !important;
+    top:auto !important;
+    right:10px !important;
+    bottom:12px !important;
+    left:auto !important;
+    width:min(190px,calc(100vw - 24px)) !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    box-sizing:border-box !important;
+    padding:9px 10px !important;
+    margin:0 !important;
+    overflow:visible !important;
+  }
+  #themeSticky .themeNoteText{
+    font-size:10px !important;
+    line-height:1.3 !important;
+    margin:0 18px 7px 0 !important;
+  }
+  #themeSticky .themeNoteLabel{font-size:8px !important;margin-bottom:5px !important}
+  #themeSticky button{
+    width:auto !important;
+    height:auto !important;
+    min-height:0 !important;
+    padding:6px 7px !important;
+    font-size:8px !important;
+  }
+
+  /* Mobile case-study prompt: also small and bottom anchored. */
+  #mobileCaseSticky{
+    position:fixed !important;
+    left:auto !important;
+    right:10px !important;
+    top:auto !important;
+    bottom:10px !important;
+    width:min(190px,calc(100vw - 24px)) !important;
+    max-width:calc(100vw - 24px) !important;
+    box-sizing:border-box !important;
+    padding:9px 10px !important;
+  }
+
+  /* Case cards: title → description → thumbnail → action. */
+  #caseGrid{
+    overflow:visible !important;
+  }
+  #caseGrid .project{
+    position:relative !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:0 !important;
+    min-height:0 !important;
+    height:auto !important;
+    padding:18px !important;
+    box-sizing:border-box !important;
+    overflow:visible !important;
+  }
+
+  #caseGrid .project h3{
+    order:1 !important;
+    width:auto !important;
+    max-width:none !important;
+    margin:38px 34px 7px 0 !important;
+    line-height:1.3 !important;
+  }
+
+  #caseGrid .project p{
+    order:2 !important;
+    width:auto !important;
+    max-width:none !important;
+    margin:0 0 13px !important;
+    line-height:1.55 !important;
+  }
+
+  #caseGrid .project .screen{
+    order:3 !important;
+    position:relative !important;
+    left:auto !important;
+    right:auto !important;
+    top:auto !important;
+    bottom:auto !important;
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    height:145px !important;
+    min-height:145px !important;
+    box-sizing:border-box !important;
+    margin:2px 0 13px !important;
+    padding:10px !important;
+    transform:perspective(700px) rotateY(-6deg) rotateX(2deg) rotate(-1deg) !important;
+    transform-origin:center center !important;
+    overflow:hidden !important;
+  }
+
+  #caseGrid .project .caseOpen{
+    order:4 !important;
+    position:relative !important;
+    left:auto !important;
+    right:auto !important;
+    top:auto !important;
+    bottom:auto !important;
+    align-self:flex-start !important;
+    margin:0 !important;
+  }
+
+  #caseGrid .project .caseDot{
+    position:absolute !important;
+    left:18px !important;
+    top:25px !important;
+  }
+  #caseGrid .project .caseArrow{
+    position:absolute !important;
+    right:18px !important;
+    top:21px !important;
+  }
+
+  /* Keep card annotations attached, but don't let them push into the card content. */
+  #caseGrid .project .attachedNote,
+  #caseGrid .project .attachedTag{
+    z-index:8 !important;
+    transform:scale(.82) !important;
+    transform-origin:top right !important;
+  }
+
+  #caseGrid .project:hover .screen{
+    transform:perspective(700px) rotateY(6deg) rotateX(-2deg) rotate(1deg) translateY(-2px) !important;
+  }
+}
+
+@media(max-width:760px){
+  #themeSticky .themeNoteClose,
+  #mobileCaseSticky .caseStickyClose{
+    width:18px !important;
+    min-width:18px !important;
+    height:18px !important;
+    min-height:18px !important;
+    padding:0 !important;
+    margin:0 !important;
+    line-height:18px !important;
+  }
+}
+
+@media(max-width:760px){
+  /* WHAT DRIVES ME belongs to the summary flow, after the summary copy. */
+  .summary{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+  }
+  .summary > #summaryText{
+    order:2 !important;
+    width:100% !important;
+    max-width:none !important;
+  }
+  .summary > .quote{
+    order:3 !important;
+    position:relative !important;
+    right:auto !important;
+    bottom:auto !important;
+    width:80% !important;
+    max-width:80% !important;
+    margin:15px 0 2px auto !important;
+    box-sizing:border-box !important;
+    padding:13px 14px !important;
+    transform:rotate(-1.5deg) !important;
+  }
+  .summary > .quote p{
+    margin:6px 0 0 !important;
+  }
+
+  /* Decorative sticky notes sit after the Vishnu/header box on mobile. */
+  .floatingNotes{
+    position:relative !important;
+    inset:auto !important;
+    width:100% !important;
+    height:auto !important;
+    min-height:0 !important;
+    margin:10px 0 16px !important;
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:wrap !important;
+    justify-content:flex-end !important;
+    align-items:flex-start !important;
+    gap:8px !important;
+    pointer-events:none !important;
+    z-index:15 !important;
+  }
+  .floatingNotes .floatNote{
+    position:relative !important;
+    left:auto !important;
+    right:auto !important;
+    top:auto !important;
+    width:min(158px,48vw) !important;
+    flex:0 1 158px !important;
+    margin:0 !important;
+    padding:10px 11px 9px !important;
+    transform:rotate(-2deg) !important;
+  }
+  .floatingNotes .floatNote.noteB{transform:rotate(2deg) !important}
+  .floatingNotes .floatNote.noteC{transform:rotate(1.5deg) !important}
+  .floatingNotes .floatNote.noteD{transform:rotate(-2deg) !important}
+}
+
 </style>
+
+<style id="mobile-only-requested-fixes">
+@media (max-width:760px){
+  /* Keep the sticky-note group centered on the mobile screen. */
+  .floatingNotes{
+    justify-content:center !important;
+    align-items:flex-start !important;
+  }
+
+  /* Center the WHAT DRIVES ME card within the mobile summary. */
+  .summary > .quote{
+    margin:15px auto 2px !important;
+  }
+
+  /* Remove the zoom controls on mobile only. */
+  .zoom{
+    display:none !important;
+  }
+
+}
+</style>
+
+<style id="desktop-top-left-cleanup">
+@media (min-width:761px){
+  #mobileCaseSticky,
+  #cheekyCursor{
+    display:none !important;
+  }
+}
+</style>
+
 </head>
 <body>
-<div class="brand">V</div>
+
+<div id="cheekyCursor" aria-hidden="true"><span class="cursorArrow"></span><span class="cursorName">You found me.</span></div>
+<div id="mobileCaseSticky" aria-hidden="true">
+  <button class="caseStickyClose" type="button" aria-label="Close">×</button>
+  <div class="caseStickyText">Psst… there are case studies hiding down here.</div>
+  <button class="caseStickyButton" type="button">View case studies</button>
+</div>
+<div id="themeSticky" role="note" aria-live="polite">
+  <button class="themeNoteClose" type="button" aria-label="Close">×</button>
+  <div class="themeNoteLabel">Psst…</div>
+  <div class="themeNoteText" id="themeNoteText">Are you ready to view this in dark mode?</div>
+  <button id="themeNoteButton" type="button">Turn it on</button>
+</div>
+
+
 <div class="topbar" aria-label="Portfolio navigation">
  <button class="tool active" data-target="home" title="Home" aria-label="Home">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.8 12 3l9 7.8"/><path d="M5.5 9.8V21h13V9.8M9.5 21v-6h5v6"/></svg>
@@ -441,7 +940,6 @@ body{font-size:16px}
 <div class="zoom">− &nbsp; 100% &nbsp; +</div>
 
 <main class="board">
- <aside class="floatingNotes" id="floatingNotes" aria-label="Design notes"></aside>
  <div class="section" id="home">
   <div class="sectionLabel">HEADER · HERO</div>
   <section class="frame hero"><div class="heroGrid">
@@ -450,6 +948,8 @@ body{font-size:16px}
    <div class="stats" id="heroStats"></div>
   </div></section>
  </div>
+
+ <aside class="floatingNotes" id="floatingNotes" aria-label="Design notes"></aside>
 
  <div class="section" id="about">
   <div class="sectionLabel">SUMMARY · ABOUT ME</div>
@@ -538,7 +1038,7 @@ $('#caseGrid').innerHTML=projects.slice(0,4).map((p,i)=>{
   <button class="caseOpen" data-id="${esc(p.id)}">VIEW CASE STUDY →</button>
  </article>`}).join('');
 
-$('#experienceGrid').innerHTML=arr(DATA.experiences).slice(0,3).map(x=>`
+$('#experienceGrid').innerHTML=arr(DATA.experiences).map(x=>`
  <article class="experienceCard"><div class="date">${esc(x.date)}</div><h3>${esc(x.title)}</h3><p><b>${esc(x.role)}</b></p>${arr(x.bullets).map(b=>`<p>• ${esc(b)}</p>`).join('')}</article>`).join('');
 
 const sectionIcons={challenge:'◉',background:'⊙',opportunity:'▣',discovery:'⌁',how:'↳',solution:'✦',use:'▦',impact:'▥',why:'♧',approach:'◈',criteria:'✓',tech:'⌘',reflection:'↗'};
@@ -614,9 +1114,10 @@ window.rerenderFromData=function(){
     </article>`;
   }).join('');
 
-  $('#experienceGrid').innerHTML=arr(DATA.experiences).slice(0,3).map(x=>`
+  $('#experienceGrid').innerHTML=arr(DATA.experiences).map(x=>`
     <article class="experienceCard"><div class="date">${esc(x.date)}</div><h3>${esc(x.title)}</h3><p><b>${esc(x.role)}</b></p>${arr(x.bullets).map(b=>`<p>• ${esc(b)}</p>`).join('')}</article>
   `).join('');
+  window.setupExperienceRail?.();
 };
 
 window.loadPortfolioFromSupabase=async function(){
@@ -992,20 +1493,228 @@ $('#download').addEventListener('click',()=>window.print());
 <script>
 /* Experience rail interaction: horizontal wheel, drag/swipe and subtle tick sound. */
 (function(){
- function initExperienceRail(){
-  const rail=document.getElementById('experienceGrid'),hint=document.querySelector('.experienceScrollHint span');
-  if(!rail)return;
-  let ctx=null,audioReady=false,lastSnap=-1,dragging=false,startX=0,startScroll=0;
-  function unlockAudio(){if(audioReady)return;try{ctx=new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();audioReady=true}catch(e){}}
-  function tick(){if(!audioReady||!ctx)return;try{const n=ctx.currentTime,o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(1050,n);o.frequency.exponentialRampToValueAtTime(720,n+.028);g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(.045,n+.003);g.gain.exponentialRampToValueAtTime(.0001,n+.04);o.connect(g);g.connect(ctx.destination);o.start(n);o.stop(n+.045)}catch(e){}}
-  function update(){if(hint){const max=rail.scrollWidth-rail.clientWidth,p=max>0?rail.scrollLeft/max:0;hint.style.transform=`translateX(${40*p}px)`}const cards=[...rail.querySelectorAll('.experienceCard')];if(!cards.length)return;const left=rail.getBoundingClientRect().left+6;let near=0,best=Infinity;cards.forEach((c,i)=>{const d=Math.abs(c.getBoundingClientRect().left-left);if(d<best){best=d;near=i}});if(lastSnap!==-1&&near!==lastSnap)tick();lastSnap=near}
-  rail.addEventListener('wheel',e=>{unlockAudio();if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){e.preventDefault();rail.scrollLeft+=e.deltaY}},{passive:false});
-  rail.addEventListener('pointerdown',e=>{unlockAudio();dragging=true;startX=e.clientX;startScroll=rail.scrollLeft;rail.setPointerCapture?.(e.pointerId)});
-  rail.addEventListener('pointermove',e=>{if(dragging)rail.scrollLeft=startScroll-(e.clientX-startX)});
-  rail.addEventListener('pointerup',()=>dragging=false);rail.addEventListener('pointercancel',()=>dragging=false);
-  rail.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);update();
- }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initExperienceRail);else initExperienceRail();
+  let railState={rail:null,hint:null,ctx:null,ready:false,lastIndex:0,drag:false,startX:0,startScroll:0};
+
+  function setupExperienceRail(){
+    const rail=document.getElementById('experienceGrid');
+    const hint=document.querySelector('#experienceScrollHint span');
+    if(!rail)return;
+    railState.rail=rail; railState.hint=hint;
+
+    function unlock(){
+      if(railState.ready)return;
+      try{
+        const AC=window.AudioContext||window.webkitAudioContext;
+        if(!AC)return;
+        railState.ctx=new AC();
+        if(railState.ctx.state==='suspended')railState.ctx.resume();
+        railState.ready=true;
+      }catch(e){}
+    }
+    function tick(){
+      if(!railState.ready||!railState.ctx)return;
+      try{
+        const t=railState.ctx.currentTime;
+        const o=railState.ctx.createOscillator();
+        const g=railState.ctx.createGain();
+        o.type='sine';
+        o.frequency.setValueAtTime(1100,t);
+        o.frequency.exponentialRampToValueAtTime(760,t+0.025);
+        g.gain.setValueAtTime(0.0001,t);
+        g.gain.exponentialRampToValueAtTime(0.035,t+0.003);
+        g.gain.exponentialRampToValueAtTime(0.0001,t+0.035);
+        o.connect(g);g.connect(railState.ctx.destination);
+        o.start(t);o.stop(t+0.04);
+      }catch(e){}
+    }
+    function updateIndicator(){
+      const max=rail.scrollWidth-rail.clientWidth;
+      if(hint){
+        const progress=max>0?rail.scrollLeft/max:0;
+        hint.style.transform=`translateX(${40*progress}px)`;
+        hint.parentElement.style.opacity=max>2?'1':'0';
+      }
+      const cards=[...rail.querySelectorAll('.experienceCard')];
+      if(!cards.length)return;
+      const left=rail.getBoundingClientRect().left+8;
+      let nearest=0,best=Infinity;
+      cards.forEach((c,i)=>{
+        const d=Math.abs(c.getBoundingClientRect().left-left);
+        if(d<best){best=d;nearest=i;}
+      });
+      if(railState.lastIndex!==nearest && rail.scrollLeft>0)tick();
+      railState.lastIndex=nearest;
+    }
+
+    // Prevent duplicate listeners when Supabase causes a re-render.
+    if(!rail.dataset.railBound){
+      rail.dataset.railBound="1";
+      rail.addEventListener('wheel',e=>{
+        unlock();
+        if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){
+          e.preventDefault();
+          rail.scrollLeft+=e.deltaY;
+        }
+      },{passive:false});
+      rail.addEventListener('pointerdown',e=>{
+        unlock();
+        railState.drag=true;railState.startX=e.clientX;railState.startScroll=rail.scrollLeft;
+        rail.setPointerCapture?.(e.pointerId);
+      });
+      rail.addEventListener('pointermove',e=>{
+        if(railState.drag)rail.scrollLeft=railState.startScroll-(e.clientX-railState.startX);
+      });
+      rail.addEventListener('pointerup',()=>railState.drag=false);
+      rail.addEventListener('pointercancel',()=>railState.drag=false);
+      rail.addEventListener('scroll',updateIndicator,{passive:true});
+    }
+    updateIndicator();
+  }
+
+  window.setupExperienceRail=setupExperienceRail;
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setupExperienceRail);
+  else setupExperienceRail();
+})();
+</script>
+
+
+<script>
+/* Fancy portfolio details: event-driven theme sticky + mobile case-study sticky. */
+(function(){
+  function initFancyExtras(){
+    const cursor=document.getElementById('cheekyCursor');
+    const sticky=document.getElementById('themeSticky');
+    const note=document.getElementById('themeNoteText');
+    const button=document.getElementById('themeNoteButton');
+    const mobileCase=document.getElementById('mobileCaseSticky');
+    if(!sticky||!note||!button)return;
+
+    function isDark(){
+      return document.documentElement.classList.contains('dark') ||
+             document.body.classList.contains('dark') ||
+             document.documentElement.dataset.theme==='dark' ||
+             document.body.dataset.theme==='dark' ||
+             document.documentElement.getAttribute('data-theme')==='dark' ||
+             document.body.getAttribute('data-theme')==='dark';
+    }
+    function setTheme(mode){
+      const dark=mode==='dark';
+      document.documentElement.classList.toggle('dark',dark);
+      document.body.classList.toggle('dark',dark);
+      document.documentElement.dataset.theme=mode;
+      document.body.dataset.theme=mode;
+      try{localStorage.setItem('portfolio-theme',mode)}catch(e){}
+      const existing=document.querySelector('[data-theme-toggle], #themeToggle, .theme-toggle');
+      if(existing && isDark()!==dark){try{existing.click()}catch(e){}}
+      updateNote();
+    }
+    function updateNote(){
+      if(isDark()){
+        note.textContent='Missing the sunshine? Turn it back to light mode.';
+        button.textContent='Turn it back to light mode';
+      }else{
+        note.textContent='Are you ready to view this in dark mode?';
+        button.textContent='Turn it on';
+      }
+    }
+    button.addEventListener('click',()=>setTheme(isDark()?'light':'dark'));
+    const closeTheme=sticky.querySelector('.themeNoteClose');
+    closeTheme?.addEventListener('click',()=>{
+      stickyClosed=true;
+      hideSticky();
+    });
+    const closeCase=mobileCase?.querySelector('.caseStickyClose');
+    closeCase?.addEventListener('click',()=>{
+      mobileCase.classList.remove('is-visible');
+      clearTimeout(hideTimer);
+    });
+
+    try{
+      const saved=localStorage.getItem('portfolio-theme');
+      if(saved==='dark'||saved==='light'){
+        document.documentElement.classList.toggle('dark',saved==='dark');
+        document.body.classList.toggle('dark',saved==='dark');
+        document.documentElement.dataset.theme=saved;
+        document.body.dataset.theme=saved;
+      }
+    }catch(e){}
+    updateNote();
+
+    /* Sticky enters only after a scroll, or after 10 seconds at the top. */
+    let stickyShown=false;
+    let stickyClosed=false;
+    let topTimer=null;
+    let hideTimer=null;
+
+    function showSticky(){
+      if(stickyClosed)return;
+      stickyShown=true;
+      sticky.classList.add('is-visible');
+    }
+    function hideSticky(){
+      sticky.classList.remove('is-visible');
+      stickyShown=false;
+    }
+    function scheduleTopSticky(){
+      clearTimeout(topTimer);
+      if(window.scrollY<40){
+        topTimer=setTimeout(showSticky,10000);
+      }
+    }
+    function onScroll(){
+      if(window.scrollY>50)showSticky();
+      if(window.scrollY<=40){
+        hideSticky();
+        stickyClosed=false;
+        scheduleTopSticky();
+      }
+
+      /* On mobile, the case-study sticky appears after the visitor has moved
+         into the page, then slides away again after a short pause. */
+      if(mobileCase && window.innerWidth<=760){
+        if(window.scrollY>180){
+          mobileCase.classList.add('is-visible');
+          clearTimeout(hideTimer);
+          hideTimer=setTimeout(()=>mobileCase.classList.remove('is-visible'),5000);
+        }else{
+          mobileCase.classList.remove('is-visible');
+        }
+      }
+    }
+    window.addEventListener('scroll',onScroll,{passive:true});
+    scheduleTopSticky();
+
+    if(mobileCase){
+      const btn=mobileCase.querySelector('.caseStickyButton');
+      btn?.addEventListener('click',()=>{
+        const target=document.getElementById('caseGrid') || document.querySelector('.project');
+        target?.scrollIntoView({behavior:'smooth',block:'start'});
+        mobileCase.classList.remove('is-visible');
+      });
+    }
+
+    /* Colored Figma-style collaborator cursor remains desktop-only. */
+    if(cursor && matchMedia('(pointer:fine)').matches){
+      const words=['You found me.','Psst… there you are.','Hey, I see you.','Caught you looking.','Nice move.'];
+      let visible=false,lastWord=-1;
+      function move(e){
+        cursor.style.left=e.clientX+'px';
+        cursor.style.top=e.clientY+'px';
+        if(!visible){visible=true;cursor.classList.add('show')}
+      }
+      window.addEventListener('mousemove',move,{passive:true});
+      window.addEventListener('mouseleave',()=>{visible=false;cursor.classList.remove('show')});
+      window.addEventListener('mouseover',()=>{
+        let n;
+        do{n=Math.floor(Math.random()*words.length)}while(words.length>1&&n===lastWord);
+        lastWord=n;
+        const label=cursor.querySelector('.cursorName');
+        if(label)label.textContent=words[n];
+      },{passive:true});
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initFancyExtras);
+  else initFancyExtras();
 })();
 </script>
 
