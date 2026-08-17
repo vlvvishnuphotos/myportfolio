@@ -383,6 +383,24 @@ body{font-size:16px}
 .cmsBtn.danger{border-color:#edc7c0 !important;background:#fff7f5 !important;color:#b23e2c !important}
 .cmsBtn.danger:hover{background:#fff0ec !important}
 
+
+/* Experience: compact horizontal rail + subtle scroll indicator */
+#experienceGrid{
+ display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:visible!important;
+ gap:18px!important;padding:8px 6px 16px!important;margin:0 -6px!important;
+ scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;
+ overscroll-behavior-x:contain;scrollbar-width:none!important;cursor:grab;
+}
+#experienceGrid:active{cursor:grabbing}
+#experienceGrid::-webkit-scrollbar{display:none!important}
+#experienceGrid .experienceCard{
+ flex:0 0 min(330px,78vw)!important;width:min(330px,78vw)!important;scroll-snap-align:start;
+}
+.experienceRailWrap{position:relative}
+.experienceScrollHint{width:64px;height:3px;border-radius:10px;background:rgba(80,95,88,.22);margin:1px auto 0;position:relative;overflow:hidden}
+.experienceScrollHint span{position:absolute;left:0;top:0;height:100%;width:24px;border-radius:10px;background:rgba(40,55,48,.55);transform:translateX(0);transition:transform .15s ease}
+@media(max-width:760px){#experienceGrid{gap:14px!important;padding-bottom:13px!important}#experienceGrid .experienceCard{flex-basis:82vw!important;width:82vw!important}}
+
 </style>
 </head>
 <body>
@@ -967,6 +985,27 @@ $('#download').addEventListener('click',()=>window.print());
 
   /* Add subtle next/previous keyboard support when the rail is focused. */
   rail.tabIndex = 0;
+})();
+</script>
+
+
+<script>
+/* Experience rail interaction: horizontal wheel, drag/swipe and subtle tick sound. */
+(function(){
+ function initExperienceRail(){
+  const rail=document.getElementById('experienceGrid'),hint=document.querySelector('.experienceScrollHint span');
+  if(!rail)return;
+  let ctx=null,audioReady=false,lastSnap=-1,dragging=false,startX=0,startScroll=0;
+  function unlockAudio(){if(audioReady)return;try{ctx=new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();audioReady=true}catch(e){}}
+  function tick(){if(!audioReady||!ctx)return;try{const n=ctx.currentTime,o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(1050,n);o.frequency.exponentialRampToValueAtTime(720,n+.028);g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(.045,n+.003);g.gain.exponentialRampToValueAtTime(.0001,n+.04);o.connect(g);g.connect(ctx.destination);o.start(n);o.stop(n+.045)}catch(e){}}
+  function update(){if(hint){const max=rail.scrollWidth-rail.clientWidth,p=max>0?rail.scrollLeft/max:0;hint.style.transform=`translateX(${40*p}px)`}const cards=[...rail.querySelectorAll('.experienceCard')];if(!cards.length)return;const left=rail.getBoundingClientRect().left+6;let near=0,best=Infinity;cards.forEach((c,i)=>{const d=Math.abs(c.getBoundingClientRect().left-left);if(d<best){best=d;near=i}});if(lastSnap!==-1&&near!==lastSnap)tick();lastSnap=near}
+  rail.addEventListener('wheel',e=>{unlockAudio();if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){e.preventDefault();rail.scrollLeft+=e.deltaY}},{passive:false});
+  rail.addEventListener('pointerdown',e=>{unlockAudio();dragging=true;startX=e.clientX;startScroll=rail.scrollLeft;rail.setPointerCapture?.(e.pointerId)});
+  rail.addEventListener('pointermove',e=>{if(dragging)rail.scrollLeft=startScroll-(e.clientX-startX)});
+  rail.addEventListener('pointerup',()=>dragging=false);rail.addEventListener('pointercancel',()=>dragging=false);
+  rail.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);update();
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initExperienceRail);else initExperienceRail();
 })();
 </script>
 
