@@ -505,7 +505,7 @@ function renderContactActions(){
 $('#summaryText').textContent=DATA.summary||'';
 renderContactActions();
 
-const projects=arr(DATA.projects);
+let projects=arr(DATA.projects);
 $('#caseGrid').innerHTML=projects.slice(0,4).map((p,i)=>{
  const isPortal=p.id==='portal';
  const isF2F=p.id==='f2f';
@@ -566,6 +566,64 @@ function openCase(id){
 document.addEventListener('click',e=>{const b=e.target.closest('.caseOpen');if(b)openCase(b.dataset.id)});
 $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeCase()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCase()});
+
+
+/* Keep the visible portfolio in sync with the JSON stored in Supabase. */
+window.rerenderFromData=function(){
+  renderSideNotes();
+  renderCore();
+  $('#summaryText').textContent=DATA.summary||'';
+  renderContactActions();
+
+  projects=arr(DATA.projects);
+  $('#caseGrid').innerHTML=projects.slice(0,4).map(p=>{
+    const isPortal=p.id==='portal';
+    const isF2F=p.id==='f2f';
+    return `
+    <article class="project ${isPortal?'portalProject':''} ${isF2F?'f2fProject':''}" style="--accent:${esc(p.dotColor||'#0ACF83')}">
+      ${isPortal?`<div class="attachedNote"><b>IMPACT NOTE</b>${esc(DATA.stickyNotes?.portal?.text||'Eliminated 1 month of')}<br></div>`:''}
+      ${isF2F?`<span class="attachedTag">${esc(DATA.stickyNotes?.f2f?.text||'CEO appreciation!')}</span>`:''}
+      <span class="caseDot" style="background:${esc(p.dotColor||'#0ACF83')}"></span>
+      <span class="caseArrow">↗</span>
+      <h3>${esc(p.title)}</h3><p>${esc(p.description||p.caseStudy?.overview||'')}</p>
+      <div class="screen"><div class="sbar"></div><div class="srow"><i></i><i></i><i></i></div><div class="chart"></div></div>
+      <button class="caseOpen" data-id="${esc(p.id)}">VIEW CASE STUDY →</button>
+    </article>`;
+  }).join('');
+
+  $('#experienceGrid').innerHTML=arr(DATA.experiences).slice(0,3).map(x=>`
+    <article class="experienceCard"><div class="date">${esc(x.date)}</div><h3>${esc(x.title)}</h3><p><b>${esc(x.role)}</b></p>${arr(x.bullets).map(b=>`<p>• ${esc(b)}</p>`).join('')}</article>
+  `).join('');
+};
+
+window.loadPortfolioFromSupabase=async function(){
+  try{
+    const {data,error}=await sb
+      .from("portfolio_data")
+      .select("content")
+      .eq("id","main")
+      .maybeSingle();
+
+    if(error){
+      console.warn("Portfolio load failed:",error.message);
+      return;
+    }
+
+    if(data?.content && typeof data.content==="object"){
+      DATA=data.content;
+      localStorage.setItem("portfolio-data",JSON.stringify(DATA));
+      window.rerenderFromData();
+      console.info("Portfolio loaded from Supabase.");
+    }else{
+      console.warn("Supabase returned no content for portfolio_data/main.");
+    }
+  }catch(err){
+    console.warn("Portfolio load failed:",err);
+  }
+};
+
+/* Load the saved version after the static fallback has rendered. */
+loadPortfolioFromSupabase();
 
 
 
