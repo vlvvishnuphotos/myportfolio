@@ -568,6 +568,11 @@ $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeCase()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCase()});
 
 
+/* Supabase connection must be initialized before any load/save operation. */
+const SUPABASE_URL="https://kvwxyhmhgvhbanfhfuog.supabase.co";
+const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2d3h5aG1oZ3ZoYmFuZmhmdW9nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY4Njg4MDksImV4cCI6MjEwMjQ0NDgwOX0.w81G64ueg4krYrtVZlwNx7a9n44DcijqTNo6nt5sCho";
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
 /* Keep the visible portfolio in sync with the JSON stored in Supabase. */
 window.rerenderFromData=function(){
   renderSideNotes();
@@ -598,6 +603,7 @@ window.rerenderFromData=function(){
 
 window.loadPortfolioFromSupabase=async function(){
   try{
+    console.info("Portfolio: loading latest content from Supabase…");
     const {data,error}=await sb
       .from("portfolio_data")
       .select("content")
@@ -622,15 +628,13 @@ window.loadPortfolioFromSupabase=async function(){
   }
 };
 
-/* Load the saved version after the static fallback has rendered. */
-loadPortfolioFromSupabase();
+/* Load the saved version from Supabase after the client is initialized.
+   Supabase is the source of truth; embedded DATA is only the offline fallback. */
+queueMicrotask(()=>loadPortfolioFromSupabase());
 
 
 
 /* Private CMS editor — Ctrl+P */
-const SUPABASE_URL="https://kvwxyhmhgvhbanfhfuog.supabase.co";
-const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2d3h5aG1oZ3ZoYmFuZmhmdW9nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY4Njg4MDksImV4cCI6MjEwMjQ0NDgwOX0.w81G64ueg4krYrtVZlwNx7a9n44DcijqTNo6nt5sCho";
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 const EDIT_USER="yogiram", EDIT_PASS="yogiram534090!";
 let editorLoggedIn=sessionStorage.getItem("portfolio-editor-auth")==="1";
 let editorSelection="profile";
