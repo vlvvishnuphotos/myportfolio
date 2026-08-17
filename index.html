@@ -342,6 +342,47 @@ body{font-size:16px}
 .editor-card .repeater-head .sub{margin:3px 0 0;font-size:10px;color:var(--muted)}
 .editor-card .btn.primary{font-weight:850}
 
+
+/* Restore original compact toolbar sizing */
+.topbar .tool{
+  width:32px !important;height:32px !important;
+  min-width:32px !important;min-height:32px !important;
+  padding:0 !important;flex:none !important;
+}
+.topbar .tool svg{
+  width:15px !important;height:15px !important;
+  min-width:15px !important;min-height:15px !important;
+  stroke-width:1.8 !important;
+}
+.topbar .download{width:38px !important;height:32px !important}
+
+/* Case cards: reserve a clean text area above the CTA */
+.project{
+  min-height:255px !important;
+  padding-bottom:62px !important;
+}
+.project p{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:4 !important;
+  max-height:102px !important;
+  overflow:hidden !important;
+  margin-bottom:0 !important;
+}
+.caseOpen{z-index:4 !important;bottom:16px !important}
+.screen{z-index:1}.caseDot,.caseArrow,.attachedTag,.attachedNote{z-index:3}
+
+/* CMS collection controls */
+.cmsCollectionHead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:10px;border-bottom:1px solid #e3e8e5;margin-bottom:10px}
+.cmsCollectionHead h3{margin:0 !important}
+.cmsItemHead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.cmsItemHead strong{font-size:11px}
+.cmsItemActions{display:flex;gap:5px;flex-wrap:wrap}
+.cmsItemActions .cmsTools{margin:0}
+.cmsItemActions .cmsTools .cmsBtn{white-space:nowrap}
+.cmsBtn.danger{border-color:#edc7c0 !important;background:#fff7f5 !important;color:#b23e2c !important}
+.cmsBtn.danger:hover{background:#fff0ec !important}
+
 </style>
 </head>
 <body>
@@ -357,7 +398,12 @@ body{font-size:16px}
   <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5h8v2M3 11h18M10 11v2h4v-2"/></svg>
  </button>
  <button class="tool" data-target="work" title="Case Studies" aria-label="Case Studies">
-  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 18 3.2-8.2L16.8 6 20 9.2 9.8 17.8 4 18Z"/><path d="m14.8 8 3.2 3.2M7.2 14.8l2 2"/></svg>
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M5 3.5h10.5A2.5 2.5 0 0 1 18 6v12.5A2.5 2.5 0 0 1 15.5 21H5a2 2 0 0 1-2-2V5.5a2 2 0 0 1 2-2Z"/>
+  <path d="M7 7h7M7 10h7M7 13h4"/>
+  <path d="m14.5 16.8 4.7-4.7 1.8 1.8-4.7 4.7-2.7.9.9-2.7Z"/>
+  <path d="m18.3 12.9 1.8 1.8"/>
+</svg>
  </button>
  <button class="tool" data-target="skills" title="Education & Skills" aria-label="Education & Skills">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H12v17H6.5A2.5 2.5 0 0 0 4 22V5.5ZM20 5.5A2.5 2.5 0 0 0 17.5 3H12v17h5.5A2.5 2.5 0 0 1 20 22V5.5Z"/></svg>
@@ -574,7 +620,7 @@ document.body.insertAdjacentHTML("beforeend",`
 </div></div>
 <div class="cmsEditor" id="cmsEditor">
  <aside class="cmsSidebar"><h2>Portfolio</h2><small>Choose what you want to edit. Each case study has its own editor and JSON import.</small><div class="cmsNav" id="cmsNav"></div><div class="caseNav" id="caseNav"></div></aside>
- <section class="cmsMain"><header class="cmsHead"><div><strong id="cmsTitle">Profile</strong><span id="cmsSubtitle">Edit and save this section</span></div><div class="cmsActions"><button class="cmsBtn" id="cmsExportAll">Export JSON</button><button class="cmsBtn" id="cmsLogout">Logout</button><button class="cmsBtn" id="cmsClose">Close</button><button class="cmsBtn primary" id="cmsSave">Save to Supabase</button></div></header><div class="cmsScroll"><div class="cmsPanel" id="cmsPanel"></div></div></section>
+ <section class="cmsMain"><header class="cmsHead"><div><strong id="cmsTitle">Profile</strong><span id="cmsSubtitle">Edit and save this section</span><div id="cmsStatus" class="cmsStatus" role="status" aria-live="polite"></div></div><div class="cmsActions"><button class="cmsBtn" id="cmsExportAll">Export JSON</button><button class="cmsBtn" id="cmsLogout">Logout</button><button class="cmsBtn" id="cmsClose">Close</button><button class="cmsBtn primary" id="cmsSave">Save to Supabase</button></div></header><div class="cmsScroll"><div class="cmsPanel" id="cmsPanel"></div></div></section>
 </div>`);
 
 const cmsSections=[["profile","👤","Profile"],["summary","✦","Summary"],["contact","☎","Contact"],["stats","▥","Stats"],["experience","▣","Experience"],["cases","✎","Case Studies"],["education","▤","Education"],["skills","◆","Skills"],["notes","📝","Sticky Notes"]];
@@ -600,6 +646,36 @@ function textArea(label,value,path,full=true){return `<div class="cmsField ${ful
 function bindInputs(){
  document.querySelectorAll("#cmsPanel [data-p]").forEach(el=>el.oninput=()=>setPath(DATA,el.dataset.p,el.value));
 }
+
+function newExperience(){
+ return {id:"experience-"+Date.now(),date:"2026 – Present",role:"UX Designer",tint:"#EFF3F0",title:"New Company",bullets:["Add your first achievement","Add your second achievement"],dotColor:"#0ACF83"};
+}
+function newCaseStudy(){
+ return {
+  id:"case-"+Date.now(),tint:"#EFF3F0",title:"New Case Study",dotColor:"#0ACF83",highlight:"",
+  description:"Add a concise description of the problem, solution and impact.",stickyNote:"",
+  caseStudy:{overview:"Add case study overview.",images:[]},
+  detailedContent:{overview:"Add the detailed case study story here.",hook:"",before:"",opportunity:"",problem:"",solution:"",whyItWorks:[],impact:[]}
+ };
+}
+window.addExperience=function(){
+ DATA.experiences=arr(DATA.experiences);DATA.experiences.push(newExperience());
+ editorSelection="experience";renderCms();rerenderFromData();cmsToast("New experience added. Edit it and Save to Supabase.");
+};
+window.deleteExperience=function(i){
+ if(!DATA.experiences?.[i])return;if(!confirm("Delete this experience?"))return;
+ DATA.experiences.splice(i,1);renderCms();rerenderFromData();cmsToast("Experience deleted. Save to Supabase to keep the change.");
+};
+window.addCaseStudy=function(){
+ DATA.projects=arr(DATA.projects);DATA.projects.push(newCaseStudy());
+ editorSelection="cases";editorCaseIndex=DATA.projects.length-1;renderCms();rerenderFromData();cmsToast("New case study added. Edit the card and overlay, then Save to Supabase.");
+};
+window.deleteCaseStudy=function(i){
+ if(!DATA.projects?.[i])return;if(!confirm("Delete this case study?"))return;
+ DATA.projects.splice(i,1);editorCaseIndex=Math.max(0,Math.min(editorCaseIndex,DATA.projects.length-1));
+ renderCms();rerenderFromData();cmsToast("Case study deleted. Save to Supabase to keep the change.");
+};
+
 function renderCms(){
  nav();
  const title=cmsSections.find(x=>x[0]===editorSelection)?.[2]||"Editor";document.getElementById("cmsTitle").textContent=title;
@@ -611,17 +687,46 @@ function renderCms(){
  if(editorSelection==="education")h=`<div class="cmsCard"><h3>Education</h3>${jsonTools("education","Education")}${textArea("Education JSON",JSON.stringify(DATA.education||[],null,2),"__education")}</div>`;
  if(editorSelection==="skills")h=`<div class="cmsCard"><h3>Skills</h3>${jsonTools("skills","Skills")}${textArea("Skills JSON",JSON.stringify(DATA.skills||{},null,2),"__skills")}</div>`;
  if(editorSelection==="notes")h=`<div class="cmsCard"><h3>Floating UX notes</h3>${jsonTools("settings.sideNotes","Sticky Notes")}${textArea("Side notes JSON",JSON.stringify(DATA.settings?.sideNotes||[],null,2),"__notes")}</div>`;
- if(editorSelection==="experience")h=`<div class="cmsCard"><h3>Experience</h3>${jsonTools("experiences","Experience")} ${arr(DATA.experiences).map((x,i)=>`<div class="cmsCard" style="background:#f8faf9"><div class="cmsGrid">${textField("Company / title",x.title,`experiences.${i}.title`)}${textField("Role",x.role,`experiences.${i}.role`)}${textField("Date",x.date,`experiences.${i}.date`)}${textField("Dot color",x.dotColor,`experiences.${i}.dotColor`)}${textArea("Bullets JSON",JSON.stringify(x.bullets||[],null,2),`__exp_${i}`)}</div></div>`).join("")}</div>`;
+ if(editorSelection==="experience")h=`<div class="cmsCard">
+ <div class="cmsCollectionHead"><div><h3>Experience</h3><div class="hint" style="margin:3px 0 0">Add, edit, delete, or import each experience independently.</div></div><button class="cmsBtn primary" onclick="addExperience()">＋ Add Experience</button></div>
+ ${jsonTools("experiences","All Experience")}
+ ${arr(DATA.experiences).map((x,i)=>`<div class="cmsCard" style="background:#f8faf9">
+   <div class="cmsItemHead"><strong>${i+1}. ${esc(x.title||"Untitled experience")}</strong><div class="cmsItemActions">
+    ${jsonTools(`experiences.${i}`,`Experience ${i+1}`)}
+    <button class="cmsBtn danger" onclick="deleteExperience(${i})">Delete Experience</button>
+   </div></div>
+   <div class="cmsGrid">${textField("Company / title",x.title,`experiences.${i}.title`)}${textField("Role",x.role,`experiences.${i}.role`)}${textField("Date",x.date,`experiences.${i}.date`)}${textField("Dot color",x.dotColor,`experiences.${i}.dotColor`)}${textArea("Bullets JSON",JSON.stringify(x.bullets||[],null,2),`__exp_${i}`)}</div>
+ </div>`).join("")}
+ <button class="cmsBtn primary" onclick="addExperience()">＋ Add Another Experience</button>
+ </div>`;
  if(editorSelection==="cases"){
-   const p=DATA.projects?.[editorCaseIndex]||{};
-   h=`<div class="cmsCard"><h3>Case Study ${editorCaseIndex+1}: ${esc(p.title||"Untitled")}</h3><div class="hint">This controls both the card on the whiteboard and the complete center overlay.</div>${jsonTools(`projects.${editorCaseIndex}`,"This Case Study")}
-   <div class="cmsGrid">${textField("Title",p.title,`projects.${editorCaseIndex}.title`)}${textField("ID",p.id,`projects.${editorCaseIndex}.id`)}${textField("Highlight / Tag",p.highlight,`projects.${editorCaseIndex}.highlight`)}${textField("Dot color",p.dotColor,`projects.${editorCaseIndex}.dotColor`)}${textField("Card tint",p.tint,`projects.${editorCaseIndex}.tint`)}${textArea("Card description",p.description,`projects.${editorCaseIndex}.description`)}${textArea("Sticky note attached to card",p.stickyNote,`projects.${editorCaseIndex}.stickyNote`)}</div></div>
-   <div class="cmsCard"><h3>Case-study overlay content</h3><div class="hint">Import or edit the entire detailedContent object. This is what the center overlay reads.</div>${jsonTools(`projects.${editorCaseIndex}.detailedContent`,"Overlay Content")}${textArea("Detailed content JSON",JSON.stringify(p.detailedContent||{},null,2),"__case_details")}</div>
-   <div class="cmsCard"><h3>Case-study summary / metadata</h3>${jsonTools(`projects.${editorCaseIndex}.caseStudy`,"Case Study Metadata")}${textArea("Case Study JSON",JSON.stringify(p.caseStudy||{},null,2),"__case_meta")}</div>
-   <div class="cmsCard"><h3>Project images</h3><div class="hint">Upload screenshots to your Supabase <b>portfolio</b> bucket. The public URL is saved into this case study.</div>
-    <div class="cmsTools"><button class="cmsBtn primary" id="uploadCaseImages">＋ Upload image</button><input id="caseImageFile" type="file" accept="image/*" multiple style="display:none"></div>
-    <div class="cmsImageList">${arr(p.caseStudy?.images).map((im,i)=>`<div class="cmsImageItem"><input data-image-index="${i}" value="${esc(im)}" style="width:100%;border:1px solid #d5ddd9;border-radius:7px;padding:9px;background:#f8faf9"><button class="cmsBtn danger" onclick="removeCaseImage(${i})">Remove</button>${/^https?:\/\//i.test(im)?`<img src="${esc(im)}" alt="">`:''}</div>`).join("")}</div>
-   </div>`;
+   const list=arr(DATA.projects);
+   if(!list.length){
+     h=`<div class="cmsCard"><div class="cmsCollectionHead"><div><h3>Case Studies</h3><div class="hint" style="margin:3px 0 0">No case studies yet.</div></div><button class="cmsBtn primary" onclick="addCaseStudy()">＋ Add Case Study</button></div>${jsonTools("projects","All Case Studies")}</div>`;
+   }else{
+     const safeIndex=Math.min(editorCaseIndex,list.length-1);
+     editorCaseIndex=safeIndex;
+     const p=list[safeIndex]||{};
+     h=`<div class="cmsCard">
+       <div class="cmsCollectionHead">
+         <div><h3>Case Studies</h3><div class="hint" style="margin:3px 0 0">${list.length} case studies · edit the selected one below</div></div>
+         <button class="cmsBtn primary" onclick="addCaseStudy()">＋ Add Case Study</button>
+       </div>
+       ${jsonTools("projects","All Case Studies")}
+       <div class="cmsItemHead"><strong>Case Study ${safeIndex+1}: ${esc(p.title||"Untitled")}</strong><div class="cmsItemActions">
+         ${jsonTools(`projects.${safeIndex}`,`This Case Study`)}
+         <button class="cmsBtn danger" onclick="deleteCaseStudy(${safeIndex})">Delete Case Study</button>
+       </div></div>
+       <div class="cmsGrid">${textField("Title",p.title,`projects.${safeIndex}.title`)}${textField("ID",p.id,`projects.${safeIndex}.id`)}${textField("Highlight / Tag",p.highlight,`projects.${safeIndex}.highlight`)}${textField("Dot color",p.dotColor,`projects.${safeIndex}.dotColor`)}${textField("Card tint",p.tint,`projects.${safeIndex}.tint`)}${textArea("Card description",p.description,`projects.${safeIndex}.description`)}${textArea("Sticky note attached to card",p.stickyNote,`projects.${safeIndex}.stickyNote`)}</div>
+     </div>
+     <div class="cmsCard"><h3>Case-study overlay content</h3><div class="hint">Import or edit the entire detailedContent object. This is what the center overlay reads.</div>${jsonTools(`projects.${safeIndex}.detailedContent`,"Overlay Content")}${textArea("Detailed content JSON",JSON.stringify(p.detailedContent||{},null,2),"__case_details")}</div>
+     <div class="cmsCard"><h3>Case-study summary / metadata</h3>${jsonTools(`projects.${safeIndex}.caseStudy`,"Case Study Metadata")}${textArea("Case Study JSON",JSON.stringify(p.caseStudy||{},null,2),"__case_meta")}</div>
+     <div class="cmsCard"><h3>Project images</h3><div class="hint">Upload screenshots to your Supabase <b>portfolio</b> bucket. The public URL is saved into this case study.</div>
+       <div class="cmsTools"><button class="cmsBtn primary" id="uploadCaseImages">＋ Upload image</button><input id="caseImageFile" type="file" accept="image/*" multiple style="display:none"></div>
+       <div class="cmsImageList">${arr(p.caseStudy?.images).map((im,i)=>`<div class="cmsImageItem"><input data-image-index="${i}" value="${esc(im)}" style="width:100%;border:1px solid #d5ddd9;border-radius:7px;padding:9px;background:#f8faf9"><button class="cmsBtn danger" onclick="removeCaseImage(${i})">Remove</button>${/^https?:\/\//i.test(im)?`<img src="${esc(im)}" alt="">`:''}</div>`).join("")}</div>
+     </div>
+     <button class="cmsBtn primary" onclick="addCaseStudy()">＋ Add Another Case Study</button>`;
+   }
  }
  document.getElementById("cmsPanel").innerHTML=h;bindInputs();
  document.querySelectorAll("#cmsPanel textarea[data-p]").forEach(el=>el.addEventListener("change",()=>{
@@ -653,10 +758,42 @@ async function uploadCaseImage(file){
  cmsToast("Image uploaded to Supabase.");
 }
 async function saveSupabase(){
- cmsToast("Saving to Supabase…");
- const {error}=await sb.from("portfolio_data").upsert({id:"main",content:DATA},{onConflict:"id"});
- if(error){cmsToast("Supabase save failed: "+error.message,false);return}
- localStorage.setItem("portfolio-data",JSON.stringify(DATA));cmsToast("Saved to Supabase successfully.");
+ const btn=document.getElementById("cmsSave");
+ if(btn?.disabled)return;
+ if(!DATA || typeof DATA!=="object"){cmsToast("Nothing to save: portfolio data is empty.",false);return}
+ if(!navigator.onLine){cmsToast("You are offline. Reconnect and try again.",false);return}
+ if(btn){btn.disabled=true;btn.textContent="Saving…"}
+ cmsToast("Saving to Supabase…",true);
+ try{
+   // The table created for this portfolio is: public.portfolio_data
+   // id is the primary key and content is JSONB.
+   const payload={id:"main",content:DATA,updated_at:new Date().toISOString()};
+   const result=await sb.from("portfolio_data").upsert(payload,{onConflict:"id"}).select("id,updated_at").single();
+   if(result.error){
+     const e=result.error;
+     let msg=e.message||"Unknown Supabase error";
+     if(e.code==="42501" || /row-level security|RLS|permission denied/i.test(msg)){
+       msg="Supabase blocked the save because Row Level Security does not allow the public editor to INSERT/UPDATE portfolio_data. Run the SQL setup supplied with this version, then try Save again.";
+     }else if(/relation .*portfolio_data.*does not exist|Could not find the table/i.test(msg)){
+       msg="Supabase table public.portfolio_data was not found. Make sure the table exists with id (text) and content (jsonb).";
+     }else if(/column .*updated_at.*does not exist/i.test(msg)){
+       // Retry without updated_at so older versions of the table still work.
+       const retry=await sb.from("portfolio_data").upsert({id:"main",content:DATA},{onConflict:"id"}).select("id").single();
+       if(retry.error)throw retry.error;
+       localStorage.setItem("portfolio-data",JSON.stringify(DATA));
+       cmsToast("Saved to Supabase successfully.",true);
+       return;
+     }
+     throw new Error(msg);
+   }
+   localStorage.setItem("portfolio-data",JSON.stringify(DATA));
+   cmsToast("Saved to Supabase successfully.",true);
+ }catch(err){
+   console.error("Portfolio save failed:",err);
+   cmsToast("Save failed: "+(err?.message||String(err)),false);
+ }finally{
+   if(btn){btn.disabled=false;btn.textContent="Save to Supabase"}
+ }
 }
 document.getElementById("cmsSave").onclick=saveSupabase;
 document.getElementById("cmsExportAll").onclick=()=>exportSectionJson("__root","Portfolio");
