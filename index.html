@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!-- Portfolio HTML version: v3.1 -->
+<!-- Portfolio HTML version: v3.9 -->
 <!-- Portfolio HTML version: v2.6 -->
 <!-- Portfolio HTML version: v2.5 -->
 <!-- Portfolio HTML version: v2.4 -->
@@ -181,7 +181,7 @@ h1{font-size:40px;line-height:.96;margin:8px 0 10px;letter-spacing:-1.7px}
 .attachedTag{position:absolute;left:16px;top:-13px;padding:7px 10px;background:#ff633b;color:#fff;border-radius:6px;font-size:9px;font-weight:900;box-shadow:0 5px 10px rgba(100,40,20,.15);transform:rotate(-2deg);z-index:8}
 .attachedTag:after{content:"";position:absolute;left:16px;bottom:-6px;width:9px;height:9px;background:#ff633b;transform:rotate(45deg)}
 .experienceCard ul{font-size:9px;line-height:1.5;color:#65706b}.experienceCard li{padding-left:1px}body.dark .experienceCard{background:#202422;border-color:#39433f;color:#edf2ef}body.dark .experienceCard .date,body.dark .experienceCard p,body.dark .experienceCard ul{color:#aab5af}.experienceGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.experienceCard{padding:19px;border:1px solid #dce2df;border-radius:12px;background:white;min-height:145px}.experienceCard h3{font-size:13px;margin:0 0 7px}.experienceCard .date{font-size:8px;color:#8b9490}.experienceCard p{font-size:9px;line-height:1.5;color:#65706b}
-.skillsGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.skillCard{padding:18px;border:1px solid #dce2df;border-radius:12px;background:white;min-height:150px}.skillCard h3{font-size:12px;margin:0 0 11px}.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font-size:8px;padding:6px 8px;background:#f1f3f2;border:1px solid #dce2df;border-radius:6px;color:#56615c}
+.skillsGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.skillCard{padding:18px;border:1px solid #dce2df;border-radius:12px;background:white;min-height:150px}.skillCard h3{font-size:12px;margin:0 0 11px}.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font-size:8px;padding:6px 8px;background:#f1f3f2;border:1px solid #dce2df;border-radius:6px;color:#56615c} .courseItems{display:flex;flex-direction:column;gap:11px}.courseItem strong{display:block;font-size:10px;color:#2f3a35;margin-bottom:3px}.courseItem p{margin:0;font-size:9px;line-height:1.45;color:#64706b}
 .contact{padding:25px 28px}.contact p{font-size:11px;line-height:1.6;color:#64706b;max-width:650px}.contactLinks{display:flex;gap:10px;flex-wrap:wrap}.contactLinks a{font-size:9px;padding:7px 9px;border:1px solid #dce2df;border-radius:7px;background:#fff;text-decoration:none;color:inherit}.contactLinks a:hover{border-color:#00b889;color:#009c76}.pills a{text-decoration:none}
 
 .note{position:absolute;width:165px;padding:13px 14px;background:#fff2a8;border:1px solid #e7d87d;box-shadow:0 9px 18px rgba(40,45,30,.10);font-size:10px;line-height:1.45;color:#343b37;z-index:4}.note b{display:block;font-size:7px;letter-spacing:.5px;margin-bottom:6px;color:#81711e}.note.one{right:-155px;top:530px;transform:rotate(-3deg)}.note.two{left:-165px;top:285px;background:#dff8ef;border-color:#9edfc9;transform:rotate(2deg)}.note.three{right:-145px;top:1220px;background:#ffdbe9;border-color:#efadc7;transform:rotate(2deg)}
@@ -1242,6 +1242,135 @@ body.dark .workStickyNote.tone-yellow:after{border-top-color:#ffe36a}
 }
 </style>
 
+
+<style id="mobile-selected-work-v3-2">
+@media (max-width:760px){
+  /* Mobile should feel like a clean swipeable deck, not a stack of text. */
+  .workDeckStage{
+    touch-action:pan-y;
+    -webkit-user-select:none;
+    user-select:none;
+    cursor:grab;
+  }
+  .workDeckStage.is-swiping{cursor:grabbing}
+  .workCard .workInfo p{
+    display:none !important;
+  }
+  .workCard .workStickyNote{
+    opacity:0 !important;
+    visibility:hidden !important;
+    pointer-events:none !important;
+    transform:translateX(-50%) translateY(5px) rotate(-2deg) !important;
+  }
+  .workCard.pos-center .workStickyNote{
+    opacity:1 !important;
+    visibility:visible !important;
+    transform:translateX(-50%) translateY(0) rotate(-2deg) !important;
+  }
+  /* Keep the front card visually dominant without making the deck too crowded. */
+  .workCard.pos-center{
+    z-index:30 !important;
+  }
+}
+</style>
+
+<style id="selected-work-no-description-v3-4">
+/* Selected Work cards: show the header/title only. */
+.workCard .workInfo p{
+  display:none !important;
+}
+.workCard .workInfo{
+  padding-top:18px;
+  padding-bottom:18px;
+}
+</style>
+
+
+<style id="selected-work-v3-6">
+/* v3.6 — clearer Selected Work hierarchy */
+.selectedWorkSubline{
+  font-size:8px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:1.15px;
+  color:#00a77d;
+  margin:0 0 6px;
+  text-transform:uppercase;
+}
+body.dark .selectedWorkSubline{color:#61e0bf}
+
+/* NDA cards: intentional contrast, with a centered lock mark on both side cards. */
+.workNda{
+  background:linear-gradient(145deg,#eef3f0 0%,#d8e3de 100%);
+  border:1px solid #b9c9c2;
+  border-style:solid;
+  box-shadow:0 18px 36px rgba(25,40,34,.15);
+}
+.workNda .workVisual{
+  background:
+    radial-gradient(circle at 50% 45%,rgba(0,184,137,.12),transparent 35%),
+    linear-gradient(145deg,#f3f7f5 0%,#d7e2dd 100%);
+}
+.workNda .ndaVisualCopy{
+  color:#4a5a54;
+}
+.workNda .ndaVisualCopy:before{
+  content:"🔒";
+  display:grid;
+  place-items:center;
+  width:58px;
+  height:58px;
+  margin:0 auto 13px;
+  border-radius:50%;
+  background:#17201d;
+  color:#fff;
+  font-size:25px;
+  line-height:1;
+  box-shadow:0 8px 18px rgba(18,30,25,.18);
+}
+.workNda .ndaVisualCopy strong{
+  color:#17201d;
+  font-size:26px;
+}
+.workNda .ndaVisualCopy span{
+  color:#586761;
+}
+.workNda .workTopLabel{
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(88,103,97,.12);
+}
+body.dark .workNda{
+  background:linear-gradient(145deg,#27312d 0%,#18211e 100%);
+  border-color:#4a5a54;
+  box-shadow:0 18px 40px rgba(0,0,0,.3);
+}
+body.dark .workNda .workVisual{
+  background:
+    radial-gradient(circle at 50% 45%,rgba(0,210,158,.12),transparent 35%),
+    linear-gradient(145deg,#2a3531 0%,#18211e 100%);
+}
+body.dark .workNda .ndaVisualCopy{color:#cbd6d1}
+body.dark .workNda .ndaVisualCopy:before{background:#edf4f0;color:#17201d}
+body.dark .workNda .ndaVisualCopy strong{color:#f1f5f3}
+body.dark .workNda .ndaVisualCopy span{color:#b8c5bf}
+</style>
+
+<style id="selected-work-v3-7">
+/* v3.7 — exact five-card Selected Work composition. */
+.designWorkDeck .workCard.pos-farleft{transform:translate3d(-50%,-50%,0) translateX(-430px) rotate(-11deg);z-index:2}
+.designWorkDeck .workCard.pos-left{transform:translate3d(-50%,-50%,0) translateX(-245px) rotate(-7deg);z-index:4}
+.designWorkDeck .workCard.pos-center{transform:translate3d(-50%,-50%,0) translateX(0) rotate(0deg);z-index:10}
+.designWorkDeck .workCard.pos-right{transform:translate3d(-50%,-50%,0) translateX(245px) rotate(7deg);z-index:4}
+.designWorkDeck .workCard.pos-farright{transform:translate3d(-50%,-50%,0) translateX(430px) rotate(11deg);z-index:2}
+/* Light theme NDA: a subtle portfolio-green field instead of a blank white card. */
+body:not(.dark) .workNda{background:linear-gradient(145deg,#dff5ec 0%,#bfe8d8 100%);border-color:#7fc9ad;box-shadow:0 18px 36px rgba(0,125,91,.18)}
+body:not(.dark) .workNda .workVisual{background:radial-gradient(circle at 50% 43%,rgba(0,184,137,.22),transparent 34%),linear-gradient(145deg,#e9faf4 0%,#c4ebdc 100%)}
+body:not(.dark) .workNda .ndaVisualCopy:before{background:#00a77d;color:#fff;box-shadow:0 8px 20px rgba(0,125,91,.25)}
+body:not(.dark) .workNda .ndaVisualCopy strong{color:#12352a}
+body:not(.dark) .workNda .ndaVisualCopy span{color:#355b4d}
+</style>
+
+<meta name="portfolio-version" content="3.9">
 </head>
 <body>
 <div id="supabaseLoader" aria-live="polite" aria-label="Loading portfolio from Supabase">
@@ -1313,15 +1442,13 @@ body.dark .workStickyNote.tone-yellow:after{border-top-color:#ffe36a}
   </div></section>
  </div>
 
- <aside class="floatingNotes" id="floatingNotes" aria-label="Design notes"></aside>
-
  <div class="section" id="about">
   <div class="sectionLabel">SUMMARY · ABOUT ME</div>
   <section class="frame summary"><div class="label">✦ SUMMARY</div><p id="summaryText"></p><div class="quote"><span id="whatDrivesTitle">WHAT DRIVES ME</span><p id="whatDrivesText"></p></div></section>
  </div>
 
  <div class="section" id="work">
-  <div class="sectionLabel">CASE STUDIES · SELECTED WORK</div>
+  <div class="sectionLabel">WHAT I DELIVERED</div>
   <section class="frame caseFrame"><div class="label">● SELECTED WORK</div><div class="caseGrid" id="caseGrid"></div></section>
  </div>
 
@@ -1329,6 +1456,8 @@ body.dark .workStickyNote.tone-yellow:after{border-top-color:#ffe36a}
   <div class="sectionLabel">EXPERIENCE · 10.1 YEARS</div>
   <div class="experienceGrid" id="experienceGrid"></div>
  </div>
+
+ <aside class="floatingNotes" id="floatingNotes" aria-label="Design notes"></aside>
 
  <div class="section" id="skills">
   <div class="sectionLabel">EDUCATION & SKILLS</div>
@@ -1385,6 +1514,15 @@ function imageUrl(value){
   }
   return '';
 }
+function caseImageTheme(value, dark=false){
+  if(typeof value==="object" && value){
+    const themed=dark
+      ? (value.dark||value.darkUrl||value.dark_url||value.darkMode||value.dark_mode||value.light||value.url)
+      : (value.light||value.lightUrl||value.light_url||value.lightMode||value.light_mode||value.url||value.dark);
+    return imageUrl(themed)||"";
+  }
+  return imageUrl(value)||"";
+}
 function caseImages(c){
   const raw=[
     ...arr(c?.caseStudy?.images),
@@ -1393,7 +1531,8 @@ function caseImages(c){
     c?.imageUrl,
     ...arr(c?.detailedContent?.images)
   ];
-  return raw.map(imageUrl).filter(Boolean);
+  const dark=document.body.classList.contains("dark");
+  return raw.map(x=>caseImageTheme(x,dark)).filter(Boolean);
 }
 function safeUrl(v){return imageUrl(v)||'';}
 function renderSideNotes(){
@@ -1417,11 +1556,17 @@ function renderCore(){
  document.getElementById('heroName').innerHTML=esc(name[0]||'V')+(name.length>1?`<br>${esc(name.slice(1).join(' '))}`:'');
  document.getElementById('heroRole').textContent=DATA.role||'';
  document.getElementById('heroDesc').textContent='I design enterprise SaaS products that solve complex problems, delight users, and drive real business impact.';
- const st=DATA.stats||{};
- document.getElementById('heroStats').innerHTML=`<div class="stat"><b>${esc(st.yearsExperience||'')}</b><span>YEARS EXPERIENCE</span></div><div class="stat"><b>${esc(st.productsDesigned||'')}</b><span>PRODUCTS DESIGNED</span></div><div class="stat"><b>${esc(st.averageSprintDelivery||'')}</b><span>AVG. SPRINT DELIVERY</span></div>`;
+ const statList=Array.isArray(DATA.stats)?DATA.stats:(Array.isArray(DATA.stats?.items)?DATA.stats.items:[]);
+ const legacyStats=[
+  {headerStatValue:DATA.stats?.yearsExperience,headerStatLabel:'Years Experience'},
+  {headerStatValue:DATA.stats?.productsDesigned,headerStatLabel:'Products Designed'},
+  {headerStatValue:DATA.stats?.averageSprintDelivery,headerStatLabel:'Avg. Sprint Delivery'}
+ ];
+ const headerStats=(statList.length?statList:legacyStats).slice(0,3).filter(x=>x&&(x.headerStatValue!=null||x.value!=null));
+ document.getElementById('heroStats').innerHTML=headerStats.map(x=>`<div class="stat"><b>${esc(x.headerStatValue??x.value??'')}</b><span>${esc(x.headerStatLabel??x.label??'')}</span></div>`).join('');
  const edu=arr(DATA.education); const first=edu[0]||{}; const sk=DATA.skills||{};
  const cards=[`<div class="skillCard"><h3>Education</h3><p style="font-size:11px;color:#64706b">${esc(first.degree||'')}</p><p style="font-size:10px;color:#89928e">${esc(first.school||'')} · ${esc(first.year||'')}</p></div>`];
- const labels={tools:'Tools',research:'Research',design:'Design'}; Object.entries(labels).forEach(([key,label])=>{cards.push(`<div class="skillCard"><h3>${label}</h3><div class="chips">${arr(sk[key]).map(x=>`<span class="chip">${esc(x)}</span>`).join('')}</div></div>`)});
+ cards.push(`<div class="skillCard otherCoursesCard"><h3>Other Courses</h3><div class="courseItems"><div class="courseItem"><strong>British Council</strong><p>English Impact course at Upper Intermediate level, certified by the British Council.</p></div><div class="courseItem"><strong>Product Development</strong><p>Secured first position at the Mission Design Discovery Conference by INSAID on Product Development.</p></div></div></div>`); const labels={tools:'Tools',design:'Design'}; Object.entries(labels).forEach(([key,label])=>{cards.push(`<div class="skillCard"><h3>${label}</h3><div class="chips">${arr(sk[key]).map(x=>`<span class="chip">${esc(x)}</span>`).join('')}</div></div>`)});
  document.getElementById('skillsGrid').innerHTML=cards.join('');
 
  // Experience is driven entirely by the Supabase JSON.
@@ -1575,7 +1720,7 @@ window.rerenderFromData=function(){
       if(uploaded)return uploaded;
     }
     const index=Math.max(0,Math.min(imgs.length-1,Number.isFinite(Number(cs.thumbnailViewIndex))?Number(cs.thumbnailViewIndex):0));
-    return imageUrl(imgs[index])||imageUrl(imgs[0])||"";
+    return caseImageTheme(imgs[index],document.body.classList.contains("dark"))||caseImageTheme(imgs[0],document.body.classList.contains("dark"))||"";
 }
 function workVisual(p){
     const image=caseThumbnail(p);
@@ -1588,7 +1733,7 @@ function workVisual(p){
     const isPortal=String(p.category||'').toLowerCase()==='ai';
     const isF2F=p.id==='f2f';
     const sticky=(isF2F||p.id==='portal') ? (DATA.stickyNotes?.[isF2F?'f2f':'portal']||{}) : null;
-    const positions=total===1?['is-front']:total===2?['pos-left','pos-right']:total===3?['pos-left','is-front','pos-right']:['pos-farleft','pos-left','is-front','pos-right'];
+    const positions=total===1?['is-front']:total===2?['pos-left','pos-right']:total===3?['pos-left','is-front','pos-right']:total===5?['pos-left','is-front','pos-right','pos-farright','pos-farleft']:['pos-farleft','pos-left','is-front','pos-right'];
     return `
       <article class="workCard ${positions[index]||''}" data-work-id="${esc(p.id)}" tabindex="0" role="button" aria-label="Open ${esc(p.title||'case study')}">
         ${sticky?.text?`<div class="workStickyNote tone-${esc(sticky.tone||'yellow')}" aria-hidden="true"><span class="stickyLabel">${esc(sticky.label||'NOTE')}</span>${esc(sticky.text)}</div>`:''}
@@ -1617,16 +1762,31 @@ function workVisual(p){
 
   function workDeck(title,kicker,items,includeNda=false){
     const cards=includeNda
-      ? ndaWorkCard('pos-farleft') + items.map((p,i)=>workCard(p,i,items.length+2)).join('') + ndaWorkCard('pos-farright')
+      ? ndaWorkCard('pos-farleft') + items.map((p,i)=>workCard(p,i,items.length===3?5:items.length+2)).join('') + ndaWorkCard('pos-farright')
       : items.map((p,i)=>workCard(p,i,items.length)).join('');
     return `<section class="workDeck ${title==='AI WORK'?'aiWorkDeck':'designWorkDeck'}">
       <div class="workDeckStage">${cards}</div>
     </section>`;
   }
 
+  /* v3.7 — Selected Work is a deliberate five-card story:
+     NDA → Change Healthcare / Credentialing → NEOS → F2F Audit → NDA. */
+  const textOf = p => `${p?.id||''} ${p?.title||''} ${p?.description||''} ${p?.caseStudy?.overview||''}`.toLowerCase();
+  const changeCase = designCases.find(p=>/change healthcare|credentialing/.test(textOf(p)));
+  const neosCase = designCases.find(p=>/neos/.test(textOf(p)));
+  const f2fCase = designCases.find(p=>p.id==='f2f' || /face.?to.?face|f2f audit|audit center/.test(textOf(p)));
+  const selectedDesignCases = [changeCase, neosCase, f2fCase].filter(Boolean);
+
+  // If a legacy dataset has a missing one, preserve the five-card layout without duplicating a work item.
+  const selectedDesignIds = new Set(selectedDesignCases.map(p=>p.id));
+  const missingSlots = 3 - selectedDesignCases.length;
+  if(missingSlots>0){
+    designCases.filter(p=>!selectedDesignIds.has(p.id)).slice(0,missingSlots).forEach(p=>selectedDesignCases.push(p));
+  }
+
   $('#caseGrid').innerHTML =
-    `<div class="selectedWorkHeading">Selected Work</div>` +
-    workDeck('DESIGN WORK','',designCases,true) +
+    `<div class="selectedWorkSubline">IMPORTANT ONES</div><div class="selectedWorkHeading">Selected Work</div>` +
+    workDeck('DESIGN WORK','',selectedDesignCases,true) +
     workDeck('AI WORK','',aiCases,false);
 
   /* Selected Work: hover intent is handled by the deck, not by
@@ -1696,7 +1856,23 @@ function workVisual(p){
       lockUntil=performance.now()+520;
     }
 
+    let touchStartX=0,touchStartY=0,touchActive=false;
+
+    stage.addEventListener('pointerdown',e=>{
+      if(e.pointerType==='touch'){
+        touchActive=true;
+        touchStartX=e.clientX;
+        touchStartY=e.clientY;
+        stage.classList.add('is-swiping');
+      }
+    },{passive:true});
+
     stage.addEventListener('pointermove',e=>{
+      if(e.pointerType==='touch'){
+        /* Never let touch movement behave like desktop hover. */
+        return;
+      }
+
       lastPointerX=e.clientX;
       lastPointerY=e.clientY;
 
@@ -1711,6 +1887,31 @@ function workVisual(p){
       selectFromHover(candidate);
     });
 
+    stage.addEventListener('pointerup',e=>{
+      if(e.pointerType!=='touch'||!touchActive)return;
+      const dx=e.clientX-touchStartX;
+      const dy=e.clientY-touchStartY;
+      touchActive=false;
+      stage.classList.remove('is-swiping');
+
+      /* A deliberate horizontal swipe moves exactly one card. */
+      if(Math.abs(dx)>42 && Math.abs(dx)>Math.abs(dy)*1.15){
+        const direction=dx<0?1:-1;
+        const next=Math.max(0,Math.min(cards.length-1,activeIndex+direction));
+        if(next!==activeIndex){
+          positionDeck(next,true);
+          lockUntil=performance.now()+300;
+        }
+      }
+    },{passive:true});
+
+    stage.addEventListener('pointercancel',e=>{
+      if(e.pointerType==='touch'){
+        touchActive=false;
+        stage.classList.remove('is-swiping');
+      }
+    },{passive:true});
+
     stage.addEventListener('pointerleave',()=>{
       cards.forEach(card=>card.classList.remove('is-hovered'));
     });
@@ -1718,7 +1919,8 @@ function workVisual(p){
     cards.forEach((card,index)=>{
       // Pointerenter is only used when the pointer genuinely enters the
       // card. The lock prevents the repositioning itself from cascading.
-      card.addEventListener('pointerenter',()=>{
+      card.addEventListener('pointerenter',e=>{
+        if(e.pointerType==='touch')return;
         if(performance.now()<lockUntil)return;
         selectFromHover(card);
       });
@@ -2128,14 +2330,36 @@ ${imageUrl(p.caseStudy?.thumbnailUrl)?`<div class="hint" style="margin-top:7px">
 <div class="cmsCard"><h3>Project images</h3><div class="hint">Upload screenshots to your Supabase <b>portfolio</b> bucket. The public URL is saved into this case study.</div><div class="cmsGrid" style="margin-top:10px"><label class="cmsField"><span>Preview sizing</span><select id="casePreviewMode"><option value="fit" ${((p.caseStudy?.previewMode||"fit")==="fit")?"selected":""}>Fit directly (preserve image)</option><option value="stretch" ${p.caseStudy?.previewMode==="stretch"?"selected":""}>Stretch to 16:9</option></select></label></div>
 <div class="hint">The case-study overlay uses a large 16:9 desktop frame, suitable for a 1920 × 1080-style preview. Choose whether each image should preserve its proportions or stretch to fill the frame.</div>
        <div class="cmsTools"><button class="cmsBtn primary" id="uploadCaseImages">＋ Upload image</button><input id="caseImageFile" type="file" accept="image/*" multiple style="display:none"></div>
-       <div class="cmsImageList">${arr(p.caseStudy?.images).map((im,i)=>`<div class="cmsImageItem caseImageEditorCard" draggable="true" data-drag-image-index="${i}">
-${imageUrl(im)?`<img class="cmsThumb" src="${esc(imageUrl(im))}" alt="View ${i+1}">`:`<div class="cmsThumb"></div>`}
+       <div class="cmsImageList">${arr(p.caseStudy?.images).map((im,i)=>{
+const light=caseImageTheme(im,false), dark=caseImageTheme(im,true);
+return `<div class="cmsImageItem caseImageEditorCard" draggable="true" data-drag-image-index="${i}">
+${light?`<img class="cmsThumb" src="${esc(light)}" alt="View ${i+1}">`:`<div class="cmsThumb"></div>`}
 <div class="caseImageEditorMeta"><b>VIEW ${i+1}</b><span>Drag this card to reorder</span></div>
-<input data-image-index="${i}" value="${esc(im)}" style="width:100%;border:1px solid #d5ddd9;border-radius:7px;padding:9px;background:#f8faf9">
+
+<div class="cmsGrid" style="margin-top:8px">
+  <div class="cmsField">
+    <span>LIGHT MODE IMAGE</span>
+    <div class="cmsTools">
+      <button type="button" class="cmsBtn primary caseThemeUpload" data-theme="light" data-image-index="${i}">＋ Upload light image</button>
+      <input class="caseThemeFile" data-theme="light" data-image-index="${i}" type="file" accept="image/*" style="display:none">
+    </div>
+    <input class="caseThemeUrl" data-theme-url="light" data-image-index="${i}" value="${esc(light)}" placeholder="Light image URL" style="width:100%;border:1px solid #d5ddd9;border-radius:7px;padding:9px;background:#f8faf9;margin-top:6px">
+  </div>
+  <div class="cmsField">
+    <span>DARK MODE IMAGE</span>
+    <div class="cmsTools">
+      <button type="button" class="cmsBtn caseThemeUpload" data-theme="dark" data-image-index="${i}">＋ Upload dark image</button>
+      <input class="caseThemeFile" data-theme="dark" data-image-index="${i}" type="file" accept="image/*" style="display:none">
+    </div>
+    <input class="caseThemeUrl" data-theme-url="dark" data-image-index="${i}" value="${esc(dark)}" placeholder="Dark image URL (optional — light image is used as fallback)" style="width:100%;border:1px solid #d5ddd9;border-radius:7px;padding:9px;background:#f8faf9;margin-top:6px">
+  </div>
+</div>
+
 <label class="cmsField caseImageDescriptionField"><span>Description for View ${i+1}</span><textarea class="viewDescriptionInput" data-view-description="${i}" rows="3" placeholder="Describe what this view shows...">${esc(arr(p.detailedContent?.imageCaptions)[i]||"")}</textarea></label>
 <div class="cmsImageActions"><button type="button" class="cmsBtn cmsReorder" onclick="moveCaseImage(${i},-1)" ${i===0?'disabled':''}>↑</button><button type="button" class="cmsBtn cmsReorder" onclick="moveCaseImage(${i},1)" ${i===arr(p.caseStudy?.images).length-1?'disabled':''}>↓</button></div>
 <button class="cmsBtn danger" onclick="removeCaseImage(${i})">Remove</button>
-</div>`).join("")}</div><div class="hint" style="margin-top:8px">Each image is now a complete View card: image + description + order. When you drag or move a view, its description moves with it. The order becomes View 1, View 2, View 3, etc. in the case-study overlay.</div>
+</div>`;
+}).join("")}</div><div class="hint" style="margin-top:8px">Each view can have two separate images: one for Light Mode and one for Dark Mode. If no dark image is provided, the Light Mode image is used as the fallback. The description and both theme images move together when you reorder a view.</div>
      </div>
      <button class="cmsBtn primary" onclick="addCaseStudy()">＋ Add Another Case Study</button>`;
    }
@@ -2206,7 +2430,17 @@ ${imageUrl(im)?`<img class="cmsThumb" src="${esc(imageUrl(im))}" alt="View ${i+1
    p.detailedContent.imageCaptions=arr(p.detailedContent.imageCaptions).slice();
    p.detailedContent.imageCaptions[Number(el.dataset.viewDescription)]=el.value;
  });
- document.querySelectorAll("#cmsPanel [data-image-index]").forEach(el=>el.oninput=()=>{DATA.projects[editorCaseIndex].caseStudy=DATA.projects[editorCaseIndex].caseStudy||{};DATA.projects[editorCaseIndex].caseStudy.images=DATA.projects[editorCaseIndex].caseStudy.images||[];DATA.projects[editorCaseIndex].caseStudy.images[+el.dataset.imageIndex]=el.value});
+ document.querySelectorAll("#cmsPanel [data-theme-url]").forEach(el=>el.oninput=()=>{
+  const p=DATA.projects[editorCaseIndex];
+  p.caseStudy=p.caseStudy||{};
+  p.caseStudy.images=p.caseStudy.images||[];
+  const i=+el.dataset.imageIndex, theme=el.dataset.themeUrl;
+  const current=p.caseStudy.images[i];
+  const obj=(typeof current==="object"&&current)?{...current}:{light:imageUrl(current)||"",dark:imageUrl(current)||""};
+  obj[theme]=el.value.trim();
+  if(theme==="light" && !obj.dark)obj.dark=obj.light;
+  p.caseStudy.images[i]=obj;
+});
  document.querySelectorAll("#cmsPanel [data-drag-image-index]").forEach(row=>{
    row.addEventListener("dragstart",e=>{e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",row.dataset.dragImageIndex);row.classList.add("dragging")});
    row.addEventListener("dragend",()=>row.classList.remove("dragging"));
@@ -2227,7 +2461,17 @@ ${imageUrl(im)?`<img class="cmsThumb" src="${esc(imageUrl(im))}" alt="View ${i+1
  });
 
  const up=document.getElementById("uploadCaseImages"), fi=document.getElementById("caseImageFile");
- if(up&&fi){up.onclick=()=>fi.click();fi.onchange=async()=>{for(const file of [...fi.files])await uploadCaseImage(file);renderCms()}}
+ if(up&&fi){up.onclick=()=>fi.click();fi.onchange=async()=>{for(const file of [...fi.files])await uploadCaseImage(file,null,"light");renderCms()}}
+ document.querySelectorAll("#cmsPanel .caseThemeUpload").forEach(btn=>{
+   const i=+btn.dataset.imageIndex, theme=btn.dataset.theme;
+   const fi=btn.parentElement.querySelector(".caseThemeFile");
+   if(!fi)return;
+   btn.onclick=()=>fi.click();
+   fi.onchange=async()=>{
+     const file=fi.files?.[0];
+     if(file){await uploadCaseImage(file,i,theme);renderCms();rerenderFromData();}
+   };
+ });
  const profileUp=document.getElementById("uploadProfileImage"), profileFi=document.getElementById("profileImageFile");
  if(profileUp&&profileFi){profileUp.onclick=()=>profileFi.click();profileFi.onchange=async()=>{const file=profileFi.files?.[0];if(file){await uploadProfileAsset(file,"photo");renderCms();rerenderFromData()}}}
  const favUp=document.getElementById("uploadFavicon"), favFi=document.getElementById("faviconFile");
@@ -2282,15 +2526,25 @@ async function uploadCaseThumbnail(file){
  p.caseStudy.thumbnailUrl=data.publicUrl;
  cmsToast("Thumbnail uploaded to Supabase.");
 }
-async function uploadCaseImage(file){
- const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,"-");const path=`case-studies/${Date.now()}-${safe}`;
+async function uploadCaseImage(file,index=null,theme="light"){
+ const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,"-");
+ const path=`case-studies/${Date.now()}-${theme}-${safe}`;
  const {error}=await sb.storage.from("portfolio").upload(path,file,{upsert:false,contentType:file.type});
  if(error){cmsToast("Upload failed: "+error.message+" (bucket: portfolio)",false);console.error("Supabase Storage upload error:",error);return}
  const {data}=sb.storage.from("portfolio").getPublicUrl(path);
- DATA.projects[editorCaseIndex].caseStudy=DATA.projects[editorCaseIndex].caseStudy||{};
- DATA.projects[editorCaseIndex].caseStudy.images=DATA.projects[editorCaseIndex].caseStudy.images||[];
- DATA.projects[editorCaseIndex].caseStudy.images.push(data.publicUrl);
- cmsToast("Image uploaded to Supabase.");
+ const p=DATA.projects[editorCaseIndex];
+ p.caseStudy=p.caseStudy||{};
+ p.caseStudy.images=p.caseStudy.images||[];
+ if(index===null){
+   p.caseStudy.images.push({light:data.publicUrl,dark:data.publicUrl});
+ }else{
+   const current=p.caseStudy.images[index];
+   const obj=(typeof current==="object"&&current)?{...current}:{light:imageUrl(current)||"",dark:imageUrl(current)||""};
+   obj[theme]=data.publicUrl;
+   if(theme==="light" && !obj.dark)obj.dark=data.publicUrl;
+   p.caseStudy.images[index]=obj;
+ }
+ cmsToast(`${theme==="dark"?"Dark":"Light"} mode image uploaded to Supabase.`);
 }
 async function saveSupabase(){
  const btn=document.getElementById("cmsSave");
@@ -2595,6 +2849,22 @@ $('#download').addEventListener('click',()=>window.print());
 })();
 
 
+</script>
+
+
+<script>
+/* Portfolio HTML v3.9 — header stats use DATA.stats[] with headerStatValue/headerStatLabel. */
+(function(){
+  function syncHeaderStats(){
+    const d=window.PORTFOLIO_DATA||window.DATA||{};
+    const list=Array.isArray(d.stats)?d.stats:(Array.isArray(d.stats?.items)?d.stats.items:[]);
+    document.querySelectorAll('[data-header-stat-value]').forEach((el,i)=>{const item=list[i];if(item)el.textContent=item.headerStatValue??item.value??'';});
+    document.querySelectorAll('[data-header-stat-label]').forEach((el,i)=>{const item=list[i];if(item)el.textContent=item.headerStatLabel??item.label??'';});
+  }
+  window.syncHeaderStat=syncHeaderStats;
+  window.syncHeaderStats=syncHeaderStats;
+  document.addEventListener('DOMContentLoaded',syncHeaderStats);
+})();
 </script>
 
 </body></html>
