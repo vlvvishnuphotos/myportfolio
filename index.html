@@ -50,7 +50,7 @@ html{scroll-behavior:smooth}
 .supabaseLoaderDots i:nth-child(2){animation-delay:.14s}.supabaseLoaderDots i:nth-child(3){animation-delay:.28s}
 @keyframes loaderBob{50%{transform:translateY(-4px) rotate(-2deg)}} 
 @keyframes loaderDot{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
-body.dark #supabaseLoader{background:#171b19;background-image:radial-gradient(#3a4540 1px,transparent 1px)}
+body.dark #supabaseLoader{background:#171b19;background-image:radial-gradient(#464d4a 1px,transparent 1px)}
 body.dark .supabaseLoaderCard{background:rgba(32,36,34,.96);border-color:#3d4743}
 body.dark .supabaseLoaderTitle{color:#edf2ef}.dark .supabaseLoaderSub{color:#a5b0aa}
 body{margin:0;background:#f7f8f6;color:#17201d;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background-image:radial-gradient(#cdd4d1 1px,transparent 1px);background-size:18px 18px}
@@ -234,7 +234,7 @@ h1{font-size:40px;line-height:.96;margin:8px 0 10px;letter-spacing:-1.7px}
 .themeToggle .moonIcon{display:none}
 body.dark .themeToggle .sunIcon{display:none}
 body.dark .themeToggle .moonIcon{display:block}
-body.dark{background:#171b1a;color:#eef3f0;background-image:radial-gradient(#30403a 1px,transparent 1px)}
+body.dark{background:#171b1a;color:#eef3f0;background-image:radial-gradient(#464d4a 1px,transparent 1px)}
 body.dark .topbar{background:rgba(28,33,31,.95);border-color:#36413d}
 body.dark .tool{color:#aeb9b4}
 body.dark .tool:hover,body.dark .tool.active{background:#173d32;color:#28d5a5}
@@ -1371,6 +1371,42 @@ body:not(.dark) .workNda .ndaVisualCopy span{color:#355b4d}
 </style>
 
 <meta name="portfolio-version" content="3.9">
+
+<script>
+/* v4.0 — prepare the tick audio engine during initial page loading.
+   Actual audible playback remains subject to browser gesture restrictions. */
+(function(){
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(AC && !window.__portfolioAudioContext){
+      window.__portfolioAudioContext=new AC({latencyHint:'interactive'});
+    }
+  }catch(_){}
+})();
+</script>
+
+
+<style id="v4-dark-canvas-dots-fix">
+/* Preserve the same dotted canvas used by light mode, with stronger contrast in dark mode. */
+html body.dark{
+  background-color:#171b1a !important;
+  background-image:radial-gradient(#464d4a 1px,transparent 1px) !important;
+  background-size:18px 18px !important;
+  background-repeat:repeat !important;
+  background-attachment:scroll !important;
+}
+</style>
+
+
+<style id="v4-dark-loader-dots">
+html body.dark #supabaseLoader{
+  background-color:#171b19 !important;
+  background-image:radial-gradient(#464d4a 1px,transparent 1px) !important;
+  background-size:18px 18px !important;
+  background-repeat:repeat !important;
+}
+</style>
+
 </head>
 <body>
 <div id="supabaseLoader" aria-live="polite" aria-label="Loading portfolio from Supabase">
@@ -1392,7 +1428,7 @@ body:not(.dark) .workNda .ndaVisualCopy span{color:#355b4d}
 <div id="themeSticky" role="note" aria-live="polite">
   <button class="themeNoteClose" type="button" aria-label="Close">×</button>
   <div class="themeNoteLabel">Psst…</div>
-  <div class="themeNoteText" id="themeNoteText">Are you ready to view this in dark mode?</div>
+  <div class="themeNoteText" id="themeNoteText">Want to switch back to light mode?</div>
   <button id="themeNoteButton" type="button">Turn it on</button>
 </div>
 
@@ -1453,7 +1489,7 @@ body:not(.dark) .workNda .ndaVisualCopy span{color:#355b4d}
  </div>
 
  <div class="section" id="experience">
-  <div class="sectionLabel">EXPERIENCE · 10.1 YEARS</div>
+  <div class="sectionLabel">EXPERIENCE</div>
   <div class="experienceGrid" id="experienceGrid"></div>
  </div>
 
@@ -1562,7 +1598,19 @@ function renderCore(){
   {headerStatValue:DATA.stats?.productsDesigned,headerStatLabel:'Products Designed'},
   {headerStatValue:DATA.stats?.averageSprintDelivery,headerStatLabel:'Avg. Sprint Delivery'}
  ];
- const headerStats=(statList.length?statList:legacyStats).slice(0,3).filter(x=>x&&(x.headerStatValue!=null||x.value!=null));
+ let headerStats=(statList.length?statList:legacyStats).slice(0,3).filter(x=>x&&(x.headerStatValue!=null||x.value!=null));
+ // Never display years-of-experience in the portfolio header; show age instead.
+ let ageShown=false;
+ headerStats=headerStats.map(x=>{
+   const label=String(x.headerStatLabel??x.label??'');
+   const value=String(x.headerStatValue??x.value??'');
+   if(/years?\s*(of\s*)?experience/i.test(label) || /10\.1\+?/.test(value)){
+     ageShown=true;
+     return {headerStatValue:'32',headerStatLabel:'Age'};
+   }
+   return x;
+ });
+ if(!ageShown) headerStats=[{headerStatValue:'32',headerStatLabel:'Age'},...headerStats].slice(0,3);
  document.getElementById('heroStats').innerHTML=headerStats.map(x=>`<div class="stat"><b>${esc(x.headerStatValue??x.value??'')}</b><span>${esc(x.headerStatLabel??x.label??'')}</span></div>`).join('');
  const edu=arr(DATA.education); const first=edu[0]||{}; const sk=DATA.skills||{};
  const cards=[`<div class="skillCard"><h3>Education</h3><p style="font-size:11px;color:#64706b">${esc(first.degree||'')}</p><p style="font-size:10px;color:#89928e">${esc(first.school||'')} · ${esc(first.year||'')}</p></div>`];
@@ -1590,11 +1638,11 @@ function renderContactActions(){
  const c=DATA.contact||{};
  const email=c.email?`<a class="pill" href="mailto:${esc(c.email)}">✉ Email</a>`:'';
  const phone=c.phone?`<a class="pill" href="tel:${esc(c.phone.replace(/\s/g,''))}">☎ Call</a>`:'';
- const linkedin=c.linkedin?`<a class="pill" href="${esc(safeUrl(c.linkedin))}" target="_blank" rel="noopener">in LinkedIn</a>`:'';
+ const linkedin=`<a class="pill" href="https://www.linkedin.com/in/vishnuvenkatesan/" data-external-link="linkedin">in LinkedIn</a>`;
  const location=c.location?`<a class="pill" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.location)}" target="_blank" rel="noopener">⌖ ${esc(c.location.split(',')[0])}</a>`:'';
  const hero=document.getElementById('heroContact'); if(hero) hero.innerHTML=email+phone+linkedin+location;
  const contact=document.getElementById('contactLinks');
- if(contact) contact.innerHTML=`${c.email?`<a href="mailto:${esc(c.email)}">✉ Email</a>`:''}${c.phone?`<a href="tel:${esc(c.phone.replace(/\s/g,''))}">☎ Call</a>`:''}${c.linkedin?`<a href="${esc(safeUrl(c.linkedin))}" target="_blank" rel="noopener">in LinkedIn</a>`:''}${c.location?`<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.location)}" target="_blank" rel="noopener">⌖ ${esc(c.location)}</a>`:''}`;
+ if(contact) contact.innerHTML=`${c.email?`<a href="mailto:${esc(c.email)}">✉ Email</a>`:''}${c.phone?`<a href="tel:${esc(c.phone.replace(/\s/g,''))}">☎ Call</a>`:''}<a href="https://www.linkedin.com/in/vishnuvenkatesan/" data-external-link="linkedin">in LinkedIn</a>${c.location?`<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.location)}" target="_blank" rel="noopener">⌖ ${esc(c.location)}</a>`:''}`;
 }
 
 /* Initial portfolio rendering is intentionally deferred until Supabase returns the JSON. */
@@ -2595,7 +2643,7 @@ document.addEventListener("keydown",e=>{
 });
 const themeToggle = document.getElementById('themeToggle');
 const savedTheme = localStorage.getItem('portfolio-theme');
-if (savedTheme === 'dark') document.body.classList.add('dark');
+if (savedTheme === 'dark') document.body.classList.remove('dark');
 
 function updateThemeButton(){
  const dark = document.body.classList.contains('dark');
@@ -2620,35 +2668,62 @@ $('#download').addEventListener('click',()=>window.print());
 </script>
 
 <script>
-/* Experience rail: reliable tick + distinct selection sound. */
+/* Experience rail: reliable tick + distinct selection sound — v4.0 mobile-ready. */
 (function(){
-  const S={ctx:null,rail:null,hint:null,lastIndex:-1,lastSound:0,drag:false,startX:0,startScroll:0};
+  const S={ctx:null,rail:null,hint:null,lastIndex:-1,lastSound:0,drag:false,startX:0,startScroll:0,ready:false};
+
+  function initAudio(){
+    try{
+      const AC=window.AudioContext||window.webkitAudioContext;
+      if(!AC)return false;
+      if(!S.ctx)S.ctx=window.__portfolioAudioContext||new AC({latencyHint:'interactive'});
+      return true;
+    }catch(_){return false}
+  }
 
   function unlock(){
     try{
-      const AC=window.AudioContext||window.webkitAudioContext;
-      if(!AC)return;
-      if(!S.ctx)S.ctx=new AC();
-      if(S.ctx.state==='suspended')S.ctx.resume();
-    }catch(_){}
+      if(!initAudio())return;
+      const ctx=S.ctx;
+      if(ctx.state==='suspended'){
+        const p=ctx.resume();
+        if(p&&typeof p.then==='function')p.then(()=>{S.ready=true}).catch(()=>{});
+      }else S.ready=true;
+    }catch(_){ }
   }
-  function tone(freq,dur,gain,endFreq){
-    unlock();
-    if(!S.ctx||S.ctx.state==='suspended')return;
-    const t=S.ctx.currentTime,o=S.ctx.createOscillator(),g=S.ctx.createGain();
-    o.type='sine';o.frequency.setValueAtTime(freq,t);
-    if(endFreq)o.frequency.exponentialRampToValueAtTime(endFreq,t+dur);
-    g.gain.setValueAtTime(.0001,t);
-    g.gain.exponentialRampToValueAtTime(gain,t+.004);
-    g.gain.exponentialRampToValueAtTime(.0001,t+dur);
-    o.connect(g);g.connect(S.ctx.destination);o.start(t);o.stop(t+dur+.006);
+
+  function playTone(freq,dur,gain,endFreq){
+    try{
+      if(!initAudio())return;
+      const ctx=S.ctx;
+      const play=()=>{
+        if(ctx.state!=='running')return;
+        const t=ctx.currentTime,o=ctx.createOscillator(),g=ctx.createGain();
+        o.type='sine';o.frequency.setValueAtTime(freq,t);
+        if(endFreq)o.frequency.exponentialRampToValueAtTime(endFreq,t+dur);
+        g.gain.setValueAtTime(.0001,t);
+        g.gain.exponentialRampToValueAtTime(gain,t+.004);
+        g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+        o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+dur+.006);
+      };
+      if(ctx.state==='running')play();
+      else{
+        const p=ctx.resume();
+        if(p&&typeof p.then==='function')p.then(play).catch(()=>{});
+      }
+    }catch(_){ }
   }
-  function tick(){tone(1180,.045,.055,720)}
-  function selection(){tone(820,.055,.05,620);setTimeout(()=>tone(1320,.05,.038,980),48)}
+
+  function tick(){playTone(1180,.045,.055,720)}
+  function selection(){playTone(820,.055,.05,620);setTimeout(()=>playTone(1320,.05,.038,980),48)}
   window.portfolioTick=tick;
   window.portfolioSelect=selection;
 
-  ['pointerdown','touchstart','keydown','wheel'].forEach(type=>{
+  // Create the audio context immediately. On mobile browsers, actual audible
+  // playback still requires a user gesture. We unlock it on the first touch,
+  // pointer, wheel, key or touch-move, before the rail begins to move.
+  initAudio();
+  ['pointerdown','touchstart','touchmove','keydown','wheel'].forEach(type=>{
     window.addEventListener(type,unlock,{passive:type!=='keydown'});
   });
 
@@ -2699,170 +2774,128 @@ $('#download').addEventListener('click',()=>window.print());
   window.setupExperienceRail=setup;
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
 })();
-</script>
-
-
-<script>
-/* Fancy portfolio details: event-driven theme sticky + mobile case-study sticky. */
-(function(){
-  function initFancyExtras(){
-    const cursor=document.getElementById('cheekyCursor');
-    const sticky=document.getElementById('themeSticky');
-    const publicOnlySticky=()=>{
-      const cmsLogin=document.getElementById('cmsLogin');
-      const cmsEditor=document.getElementById('cmsEditor');
-      const modal=document.getElementById('modal');
-      return !(cmsLogin?.classList.contains('open') || cmsEditor?.classList.contains('open') || modal?.classList.contains('open'));
-    };
-    const note=document.getElementById('themeNoteText');
-    const button=document.getElementById('themeNoteButton');
-    const mobileCase=document.getElementById('mobileCaseSticky');
-    if(!sticky||!note||!button)return;
-
-    function isDark(){
-      return document.documentElement.classList.contains('dark') ||
-             document.body.classList.contains('dark') ||
-             document.documentElement.dataset.theme==='dark' ||
-             document.body.dataset.theme==='dark' ||
-             document.documentElement.getAttribute('data-theme')==='dark' ||
-             document.body.getAttribute('data-theme')==='dark';
-    }
-    function setTheme(mode){
-      const dark=mode==='dark';
-      document.documentElement.classList.toggle('dark',dark);
-      document.body.classList.toggle('dark',dark);
-      document.documentElement.dataset.theme=mode;
-      document.body.dataset.theme=mode;
-      try{localStorage.setItem('portfolio-theme',mode)}catch(e){}
-      const existing=document.querySelector('[data-theme-toggle], #themeToggle, .theme-toggle');
-      if(existing && isDark()!==dark){try{existing.click()}catch(e){}}
-      updateNote();
-    }
-    function updateNote(){
-      if(isDark()){
-        note.textContent='Missing the sunshine? Turn it back to light mode.';
-        button.textContent='Turn it back to light mode';
-      }else{
-        note.textContent='Are you ready to view this in dark mode?';
-        button.textContent='Turn it on';
-      }
-    }
-    button.addEventListener('click',()=>setTheme(isDark()?'light':'dark'));
-    const closeTheme=sticky.querySelector('.themeNoteClose');
-    closeTheme?.addEventListener('click',()=>{
-      stickyClosed=true;
-      hideSticky();
-    });
-    const closeCase=mobileCase?.querySelector('.caseStickyClose');
-    closeCase?.addEventListener('click',()=>{
-      mobileCase.classList.remove('is-visible');
-      clearTimeout(hideTimer);
-    });
-
-    try{
-      const saved=localStorage.getItem('portfolio-theme');
-      if(saved==='dark'||saved==='light'){
-        document.documentElement.classList.toggle('dark',saved==='dark');
-        document.body.classList.toggle('dark',saved==='dark');
-        document.documentElement.dataset.theme=saved;
-        document.body.dataset.theme=saved;
-      }
-    }catch(e){}
-    updateNote();
-
-    /* Sticky enters only after a scroll, or after 10 seconds at the top. */
-    let stickyShown=false;
-    let stickyClosed=false;
-    let topTimer=null;
-    let hideTimer=null;
-
-    function showSticky(){
-      if(stickyClosed || !publicOnlySticky())return;
-      stickyShown=true;
-      sticky.classList.add('is-visible');
-    }
-    function hideSticky(){
-      sticky.classList.remove('is-visible');
-      stickyShown=false;
-    }
-    function scheduleTopSticky(){
-      clearTimeout(topTimer);
-      if(window.scrollY<40){
-        topTimer=setTimeout(showSticky,10000);
-      }
-    }
-    function onScroll(){
-      if(window.scrollY>50)showSticky();
-      if(window.scrollY<=40){
-        hideSticky();
-        stickyClosed=false;
-        scheduleTopSticky();
-      }
-
-      /* On mobile, the case-study sticky appears after the visitor has moved
-         into the page, then slides away again after a short pause. */
-      if(mobileCase && window.innerWidth<=760){
-        if(window.scrollY>180){
-          mobileCase.classList.add('is-visible');
-          clearTimeout(hideTimer);
-          hideTimer=setTimeout(()=>mobileCase.classList.remove('is-visible'),5000);
-        }else{
-          mobileCase.classList.remove('is-visible');
-        }
-      }
-    }
-    window.addEventListener('scroll',onScroll,{passive:true});
-    scheduleTopSticky();
-
-    if(mobileCase){
-      const btn=mobileCase.querySelector('.caseStickyButton');
-      btn?.addEventListener('click',()=>{
-        const target=document.getElementById('caseGrid') || document.querySelector('.project');
-        target?.scrollIntoView({behavior:'smooth',block:'start'});
-        mobileCase.classList.remove('is-visible');
-      });
-    }
-
-    /* Colored Figma-style collaborator cursor remains desktop-only. */
-    if(cursor && matchMedia('(pointer:fine)').matches){
-      const words=['You found me.','Psst… there you are.','Nice catch.'];
-      let visible=false,lastWord=-1;
-      function move(e){
-        cursor.style.left=e.clientX+'px';
-        cursor.style.top=e.clientY+'px';
-        if(!visible){visible=true;cursor.classList.add('show')}
-      }
-      window.addEventListener('mousemove',move,{passive:true});
-      window.addEventListener('mouseleave',()=>{visible=false;cursor.classList.remove('show')});
-      window.addEventListener('mouseover',()=>{
-        let n;
-        do{n=Math.floor(Math.random()*words.length)}while(words.length>1&&n===lastWord);
-        lastWord=n;
-        const label=cursor.querySelector('.cursorName');
-        if(label)label.textContent=words[n];
-      },{passive:true});
-    }
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initFancyExtras);
-  else initFancyExtras();
-})();
 
 
 </script>
 
 
 <script>
-/* Portfolio HTML v3.9 — header stats use DATA.stats[] with headerStatValue/headerStatLabel. */
+/* Portfolio HTML v4.0 — header stats use DATA.stats[] with headerStatValue/headerStatLabel. */
 (function(){
   function syncHeaderStats(){
     const d=window.PORTFOLIO_DATA||window.DATA||{};
-    const list=Array.isArray(d.stats)?d.stats:(Array.isArray(d.stats?.items)?d.stats.items:[]);
+    const list=Array.isArray(d.stats)?d.stats:(Array.isArray(d.stats?.items)?d.stats.items:(Array.isArray(d.stats?.stats)?d.stats.stats:[]));
     document.querySelectorAll('[data-header-stat-value]').forEach((el,i)=>{const item=list[i];if(item)el.textContent=item.headerStatValue??item.value??'';});
     document.querySelectorAll('[data-header-stat-label]').forEach((el,i)=>{const item=list[i];if(item)el.textContent=item.headerStatLabel??item.label??'';});
   }
   window.syncHeaderStat=syncHeaderStats;
   window.syncHeaderStats=syncHeaderStats;
   document.addEventListener('DOMContentLoaded',syncHeaderStats);
+})();
+</script>
+
+
+<script id="v4-header-contact-links">
+document.addEventListener('click', function(e){
+  const el = e.target.closest('[data-action]');
+  if(!el) return;
+  const action = el.getAttribute('data-action');
+  if(action === 'email' && el.tagName !== 'A') location.href='mailto:vlvvishnu@gmail.com';
+  if(action === 'call' && el.tagName !== 'A') location.href='tel:9940070651';
+  if(action === 'linkedin' && el.tagName !== 'A') window.open('https://www.linkedin.com/in/vishnuvenkatesan/','_blank','noopener');
+});
+</script>
+
+
+<script id="v4-linkedin-external-fix">
+document.addEventListener('click', function(e){
+  const link = e.target.closest('a[data-external-link="linkedin"]');
+  if(!link) return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  window.open('https://www.linkedin.com/in/vishnuvenkatesan/', '_blank', 'noopener,noreferrer');
+}, true);
+</script>
+
+
+
+<script id="v4-theme-sticky-restore">
+/* Theme sticky note: same sticky/clip treatment, with a light-mode invitation
+   and a dark-mode invitation to return to light mode. */
+(function(){
+  function initThemeSticky(){
+    const note=document.getElementById('themeSticky');
+    const toggle=document.getElementById('themeToggle');
+    const turnOn=document.getElementById('themeNoteButton');
+    const close=document.querySelector('#themeSticky .themeNoteClose');
+    if(!note) return;
+
+    const title=note.querySelector('.themeNoteTitle');
+    const button=turnOn;
+    let shown=false;
+
+    function isDark(){
+      return document.body.classList.contains('dark');
+    }
+
+    function syncCopy(){
+      if(!title || !button) return;
+      if(isDark()){
+        title.textContent='Want to switch back to light mode?';
+        button.textContent='Turn it off';
+      }else{
+        title.textContent='Are you ready to view this in dark mode?';
+        button.textContent='Turn it on';
+      }
+    }
+
+    function show(){
+      if(shown) return;
+      shown=true;
+      syncCopy();
+      note.classList.add('is-visible');
+      note.setAttribute('aria-hidden','false');
+    }
+
+    function hide(){
+      note.classList.remove('is-visible');
+      note.setAttribute('aria-hidden','true');
+    }
+
+    function onScroll(){
+      if(window.scrollY > 60) show();
+    }
+
+    window.addEventListener('scroll',onScroll,{passive:true});
+    window.addEventListener('wheel',function(){ if(window.scrollY > 20) show(); },{passive:true});
+    window.addEventListener('touchmove',function(){ if(window.scrollY > 20) show(); },{passive:true});
+
+    button?.addEventListener('click',function(e){
+      e.preventDefault();
+      hide();
+      toggle?.click();
+    });
+
+    close?.addEventListener('click',function(e){
+      e.preventDefault();
+      hide();
+    });
+
+    toggle?.addEventListener('click',function(){
+      setTimeout(function(){
+        syncCopy();
+        shown=false;
+      },0);
+    });
+
+    syncCopy();
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',initThemeSticky);
+  }else{
+    initThemeSticky();
+  }
 })();
 </script>
 
