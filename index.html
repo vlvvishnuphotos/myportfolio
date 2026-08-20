@@ -1407,6 +1407,8 @@ html body.dark #supabaseLoader{
 }
 </style>
 
+<script>window.PORTFOLIO_RESUME_URL="";</script>
+
 </head>
 <body>
 <div id="supabaseLoader" aria-live="polite" aria-label="Loading portfolio from Supabase">
@@ -1422,8 +1424,8 @@ html body.dark #supabaseLoader{
 <div id="cheekyCursor" aria-hidden="true"><span class="cursorArrow"></span><span class="cursorName">You found me.</span></div>
 <div id="mobileCaseSticky" aria-hidden="true">
   <button class="caseStickyClose" type="button" aria-label="Close">×</button>
-  <div class="caseStickyText">Psst… there are case studies hiding down here.</div>
-  <button class="caseStickyButton" type="button">View case studies</button>
+  <div class="caseStickyText">Psst… there are a few good ideas hiding down here.</div>
+  <button class="caseStickyButton" type="button">Take a look</button>
 </div>
 <div id="themeSticky" role="note" aria-live="polite">
   <button class="themeNoteClose" type="button" aria-label="Close">×</button>
@@ -2127,6 +2129,7 @@ window.loadPortfolioFromSupabase=async function(){
     // Supabase is the ONLY runtime source of portfolio content.
     // The embedded DATA object is never rendered as a fallback.
     DATA=data.content;
+    window.PORTFOLIO_DATA=DATA;
 
     // v1.3: normalize case-study ordering and the two requested sticky notes.
     DATA.projects=arr(DATA.projects).map((p,i)=>{
@@ -2135,18 +2138,38 @@ window.loadPortfolioFromSupabase=async function(){
     });
 
     DATA.stickyNotes=DATA.stickyNotes||{};
+    /* Keep the portfolio sticky notes understandable even without project context. */
     DATA.stickyNotes.f2f={
       ...(typeof DATA.stickyNotes.f2f==='object' ? DATA.stickyNotes.f2f : {}),
-      label:'Reward',
-      text:'CEO Appreciation',
+      label:'Small win',
+      text:'A small improvement can make a big difference.',
       tone:'orange'
     };
     DATA.stickyNotes.portal={
       ...(typeof DATA.stickyNotes.portal==='object' ? DATA.stickyNotes.portal : {}),
-      label:'Impact note',
-      text:'Eliminated 1 month of brainstorming per view.',
+      label:'Simple idea',
+      text:'Bring the important things together.',
       tone:'yellow'
     };
+
+    /* Replace project-specific floating notes with short, universal examples. */
+    DATA.settings=DATA.settings||{};
+    DATA.settings.sideNotes=[
+      {
+        position:'A',
+        tone:'mint',
+        title:'Good UX',
+        text:'Good UX should feel simple, not obvious.',
+        caption:'KEEP IT SIMPLE'
+      },
+      {
+        position:'B',
+        tone:'purple',
+        title:'Design thought',
+        text:'If it feels confusing, there is probably a simpler way.',
+        caption:'LOOK FOR CLARITY'
+      }
+    ];
 
     portfolioDataReady=true;
     window.rerenderFromData();
@@ -2311,7 +2334,9 @@ function renderCms(){
  const title=cmsSections.find(x=>x[0]===editorSelection)?.[2]||"Editor";document.getElementById("cmsTitle").textContent=title;
  let h="";
  if(editorSelection==="profile")h=`<div class="cmsCard"><h3>Profile</h3><div class="hint">Everything here feeds the hero/header. Upload your profile image and browser favicon to the Supabase <b>portfolio</b> bucket.</div>${jsonTools("__root","Full Portfolio")}<div class="cmsGrid">${textField("Name",DATA.name,"name")}${textField("Role",DATA.role,"role")}${textField("Logo icon",DATA.logoIcon,"logoIcon")}${textField("Photo URL",DATA.photo,"photo")}${textField("Favicon URL",DATA.favicon,"favicon")}</div>
-<div class="cmsCard" style="background:#f8faf9"><h3>Profile image</h3><div class="hint">Shown in the circular profile area of the hero.</div><div class="cmsTools"><button class="cmsBtn primary" id="uploadProfileImage">＋ Upload profile image</button><input id="profileImageFile" type="file" accept="image/*" style="display:none"></div>${DATA.photo?`<div class="cmsAssetPreview"><img src="${esc(imageUrl(DATA.photo))}" alt="Profile preview"><span>${esc(DATA.photo)}</span></div>`:''}</div>
+<div class="cmsCard" style="background:#f8faf9"><h3>Profile image</h3><div class="hint">Shown in the circular profile area of the hero.</div><div class="cmsTools"><button class="cmsBtn primary" id="uploadProfileImage">
+＋ Upload profile image</button><input id="profileImageFile" type="file" accept="image/*" style="display:none"></div>${DATA.photo?`<div class="cmsAssetPreview"><img src="${esc(imageUrl(DATA.photo))}" alt="Profile preview"><span>${esc(DATA.photo)}</span></div>`:''}</div>
+<div class="cmsCard" style="background:#f8faf9"><h3>Resume</h3><div class="hint">Paste the resume URL used by the Download Resume button. Save this section to the portfolio with the main “Save to Supabase” button.</div>${textField("Resume link",DATA.resumeUrl||"","resumeUrl",true)}<div class="cmsTools"><button class="cmsBtn" id="saveResumeLink">Save Resume Link</button><span id="resumeLinkStatus" class="cmsStatus" role="status"></span></div></div>
 <div class="cmsCard" style="background:#f8faf9"><h3>Browser favicon</h3><div class="hint">Shown in the browser tab for the portfolio.</div><div class="cmsTools"><button class="cmsBtn primary" id="uploadFavicon">＋ Upload favicon</button><input id="faviconFile" type="file" accept="image/png,image/jpeg,image/webp,image/x-icon,.ico" style="display:none"></div>${DATA.favicon?`<div class="cmsAssetPreview favicon"><img src="${esc(imageUrl(DATA.favicon))}" alt="Favicon preview"><span>${esc(DATA.favicon)}</span></div>`:''}</div></div>`;
  if(editorSelection==="summary")h=`<div class="cmsCard"><h3>Summary</h3>${jsonTools("summary","Summary")}
 ${textArea("Summary text",DATA.summary,"summary")}
@@ -2412,6 +2437,7 @@ ${light?`<img class="cmsThumb" src="${esc(light)}" alt="View ${i+1}">`:`<div cla
    }
  }
  document.getElementById("cmsPanel").innerHTML=h;bindInputs();
+  document.getElementById("saveResumeLink")?.addEventListener("click",()=>saveSupabase());
  document.querySelectorAll("#cmsPanel textarea[data-p]").forEach(el=>el.addEventListener("change",()=>{
    const p=el.dataset.p;
    try{
@@ -2664,7 +2690,12 @@ document.querySelectorAll('.tool[data-target]').forEach(b=>b.addEventListener('c
  document.querySelectorAll('.tool[data-target]').forEach(x=>x.classList.remove('active'));b.classList.add('active');
  document.getElementById(b.dataset.target)?.scrollIntoView({behavior:'smooth',block:'center'});
 }));
-$('#download').addEventListener('click',()=>window.print());
+$('#download').addEventListener('click',(e)=>{
+  e.preventDefault();
+  e.stopPropagation();
+  const url=(window.PORTFOLIO_DATA?.resumeUrl||'').trim();
+  if(url) window.open(url,'_blank','noopener,noreferrer');
+});
 </script>
 
 <script>
