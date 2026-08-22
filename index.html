@@ -1370,7 +1370,7 @@ body:not(.dark) .workNda .ndaVisualCopy strong{color:#12352a}
 body:not(.dark) .workNda .ndaVisualCopy span{color:#355b4d}
 </style>
 
-<meta name="portfolio-version" content="3.9">
+<meta name="portfolio-version" content="4.5">
 
 <script>
 /* v4.0 — prepare the tick audio engine during initial page loading.
@@ -1408,6 +1408,179 @@ html body.dark #supabaseLoader{
 </style>
 
 <script>window.PORTFOLIO_RESUME_URL="";</script>
+
+
+<style id="v4-1-nda-styles">
+.nda-setting{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0;padding:10px 12px;border:1px solid rgba(0,0,0,.10);border-radius:8px;background:rgba(255,255,255,.55);font-size:13px}
+.nda-setting label{font-weight:700;display:flex;align-items:center;gap:7px}
+.nda-setting input{accent-color:#00a878}
+.nda-setting span{opacity:.7}
+.nda-overlay-notice{margin:10px 0;padding:9px 14px;border:1px solid #e4c85d;border-radius:10px;background:#fff8dc;color:#544914;font-size:12px;line-height:1.45}
+body.dark .nda-setting{background:rgba(30,35,33,.8);border-color:rgba(255,255,255,.14)}
+body.dark .nda-overlay-notice{background:#292a20;color:#eee4a8;border-color:#6f6732}
+</style>
+
+
+<style id="v4-2-ai-cta">
+.aiCaseCta{
+  align-self:flex-start;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:11px 16px;
+  border-radius:9px;
+  background:#00a77d;
+  color:#fff;
+  text-decoration:none;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.4px;
+  border:1px solid #00a77d;
+  box-shadow:0 8px 18px rgba(0,167,125,.18);
+  transition:transform .18s ease,box-shadow .18s ease,background .18s ease;
+  white-space:nowrap;
+}
+.aiCaseCta:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 22px rgba(0,167,125,.24);
+  background:#00966f;
+}
+body.dark .aiCaseCta{
+  background:#20c496;
+  border-color:#20c496;
+  color:#11201b;
+}
+</style>
+
+
+<style id="v4-2-taller-case-views">
+/* Case-study overlay views: give the screenshots more vertical presence. */
+.visualGallery .visualMain,
+.visualGallery .visualMainImage,
+.visualGallery .visualDesktopImage{
+  min-height:340px !important;
+}
+.visualGallery .visualMainImage,
+.visualGallery .visualDesktopImage{
+  height:340px !important;
+  object-fit:contain !important;
+}
+.visualGallery .visualMain{
+  min-height:340px !important;
+}
+@media (max-width:900px){
+  .visualGallery .visualMain,
+  .visualGallery .visualMainImage,
+  .visualGallery .visualDesktopImage{
+    min-height:250px !important;
+    height:250px !important;
+  }
+}
+</style>
+<style id="v4-3-editor-toggles">
+.cmsToggleRow{display:flex!important;align-items:center!important;width:42px!important;height:24px!important;position:relative!important;cursor:pointer!important}
+.cmsToggleInput{position:absolute!important;opacity:0!important;width:1px!important;height:1px!important}
+.cmsToggle{display:block;width:42px;height:24px;border-radius:999px;background:#cbd3cf;border:1px solid #b7c0bb;position:relative;transition:background .18s ease,border-color .18s ease}
+.cmsToggle:after{content:"";position:absolute;width:18px;height:18px;left:2px;top:2px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.18);transition:transform .18s ease}
+.cmsToggleInput:checked + .cmsToggle{background:#00a77d;border-color:#00a77d}
+.cmsToggleInput:checked + .cmsToggle:after{transform:translateX(18px)}
+body.dark .cmsToggle{background:#3a4440;border-color:#58635e}
+body.dark .cmsToggleInput:checked + .cmsToggle{background:#20c496;border-color:#20c496}
+</style>
+<style id="v4-4-cta-layout">
+.heroCtaAndMeta{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  min-width:126px;
+}
+.heroCtaAndMeta .aiCaseCta{
+  width:100%;
+  box-sizing:border-box;
+}
+.heroDivider{
+  height:1px;
+  width:100%;
+  background:var(--line,#d9e1dd);
+  margin:10px 0;
+}
+body.dark .heroDivider{background:#3e4743}
+@media(max-width:760px){
+  .heroCtaAndMeta{min-width:110px}
+  .heroDivider{margin:8px 0}
+}
+</style>
+
+<style id="v4-7-case-view-cards-final">
+/* Final small-view treatment: compact square cards like the selected-work cards. */
+#modalPanel .visualThumbs{
+  display:flex !important;
+  flex-wrap:nowrap !important;
+  gap:12px !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  scroll-snap-type:x mandatory !important;
+  padding:4px 2px 9px !important;
+}
+#modalPanel .visualThumbs .visualThumb{
+  flex:0 0 210px !important;
+  width:210px !important;
+  height:210px !important;
+  min-width:210px !important;
+  max-width:210px !important;
+  min-height:210px !important;
+  max-height:210px !important;
+  padding:10px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:flex-start !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+  border-radius:10px !important;
+  scroll-snap-align:start !important;
+}
+#modalPanel .visualThumbs .visualThumb img,
+#modalPanel .visualThumbs .caseViewThumbImage{
+  display:block !important;
+  width:100% !important;
+  height:118px !important;
+  min-height:118px !important;
+  max-height:118px !important;
+  object-fit:contain !important;
+  border-radius:6px !important;
+  margin:0 0 7px !important;
+  flex:0 0 118px !important;
+}
+#modalPanel .visualThumbs .visualThumb b{
+  flex:0 0 auto !important;
+  margin:0 0 7px !important;
+}
+#modalPanel .visualThumbs .visualThumb span{
+  display:block !important;
+  line-height:1.3 !important;
+  font-size:8px !important;
+  overflow:hidden !important;
+  max-height:31px !important;
+}
+@media(max-width:900px){
+  #modalPanel .visualThumbs .visualThumb{
+    flex-basis:190px !important;
+    width:190px !important;
+    min-width:190px !important;
+    max-width:190px !important;
+    height:190px !important;
+    min-height:190px !important;
+    max-height:190px !important;
+  }
+  #modalPanel .visualThumbs .visualThumb img,
+  #modalPanel .visualThumbs .caseViewThumbImage{
+    height:105px !important;
+    min-height:105px !important;
+    max-height:105px !important;
+    flex-basis:105px !important;
+  }
+}
+</style>
 
 </head>
 <body>
@@ -1667,7 +1840,7 @@ function visualGallery(c){
       const hasUrl=!!imageUrl(x);
       return `<button type="button" class="visualThumb${i===0?' active':''}" data-visual-index="${i}" aria-label="View ${i+1}">
         <b>VIEW ${i+1}</b>
-        ${hasUrl?`<img src="${esc(imageUrl(x))}" alt="View ${i+1}" style="width:100%;height:70px;object-fit:cover;border-radius:4px;margin-bottom:5px">`:esc(x)}
+        ${hasUrl?`<img src="${esc(imageUrl(x))}" alt="View ${i+1}" class="caseViewThumbImage">`:esc(x)}
         ${caps[i]?`<span style="color:#7f8985">${esc(caps[i])}</span>`:''}
       </button>`;
    }).join('')}</div>
@@ -1677,9 +1850,12 @@ function openCase(id){
  const c=projects.find(x=>x.id===id); if(!c)return;
  const d=c.detailedContent||{}, cs=c.caseStudy||{};
  let out=`<div class="modalTop"><div><div class="modalKicker">${esc(c.title)}</div><div class="modalMeta">${esc(cs.role||'UX Designer')} · ${esc(cs.duration||'')}</div></div><button class="modalClose" onclick="closeCase()">×</button></div><div class="modalBody">
- <div class="modalHero"><div><div class="eyebrow">CASE STUDY</div><h2>${esc(c.title)}</h2><p>${esc(cs.overview||c.description||'')}</p></div><div class="heroStat"><b>${esc(cs.role||'')}</b><span>ROLE</span><b>${esc(cs.duration||'')}</b><span>DURATION</span></div></div>
+ <div class="modalHero">
+  <div><div class="eyebrow">CASE STUDY</div><h2>${esc(c.title)}</h2><p>${esc(cs.overview||c.description||'')}</p></div>
+  ${c.aiCtaEnabled===true && c.aiCtaLink ? `<div class="heroCtaAndMeta"><a class="aiCaseCta" href="${esc(c.aiCtaLink)}" target="_blank" rel="noopener noreferrer">VIEW LIVE ↗</a><div class="heroDivider"></div>${String(c.category||c.caseType||'').toLowerCase()==='ai' ? '' : `<div class="heroStat"><b>${esc(cs.role||'')}</b><span>ROLE</span><b>${esc(cs.duration||'')}</b><span>DURATION</span></div>`}</div>` : (String(c.category||c.caseType||'').toLowerCase()==='ai' ? '' : `<div class="heroStat"><b>${esc(cs.role||'')}</b><span>ROLE</span><b>${esc(cs.duration||'')}</b><span>DURATION</span></div>`) }
+</div>
  ${d.hook?`<div class="hookBox"><div class="eyebrow">✦ THE HOOK</div><p>${esc(d.hook)}</p></div>`:''}
- ${d.ndaDisclaimer?`<div class="nda">▣ <b>NDA Notice:</b> ${esc(d.ndaDisclaimer)}</div>`:''}
+ ${c.ndaProtected?`<div class="nda">▣ <b>NDA Notice:</b> ${esc(d.ndaDisclaimer||"Due to confidentiality around ongoing development, some screens are shown in limited detail. I'm happy to walk through the full product in person or during a video conferencing interview.")}</div>`:''}
  ${visualGallery(c)}
  ${d.background?section(d.background.title||'BEFORE / CONTEXT',`<p>${esc(d.background.description||'')}</p>${arr(d.background.painPoints).length?`<div class="modalList">${arr(d.background.painPoints).map(x=>`<div>${esc(x)}</div>`).join('')}</div>`:''}`,'◉'):''}
  ${cs.challenge?section('The Challenge',`<p>${esc(cs.challenge)}</p>`,'!'):''}
@@ -2289,13 +2465,20 @@ function jsonTools(path,label){
 window.exportSectionJson=function(path){const v=getPath(DATA,path);const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(v,null,2)],{type:"application/json"}));a.download=(path||"portfolio")+".json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
 window.importSectionJson=function(input,path){const f=input.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const v=JSON.parse(r.result);if(path==="__root")DATA=v;else setPath(DATA,path,v);renderCms();rerenderFromData();cmsToast("JSON imported. Save to Supabase when ready.")}catch(e){cmsToast("Invalid JSON: "+e.message,false)}};r.readAsText(f)};
 function textField(label,value,path,full=false){return `<div class="cmsField ${full?'full':''}"><label>${label}</label><input data-p="${path}" value="${esc(value??"")}"></div>`}
+function toggleField(label,value,path){
+ return `<div class="cmsField"><label>${label}</label><label class="cmsToggleRow"><input class="cmsToggleInput" type="checkbox" data-p="${path}" ${value===true?"checked":""}><span class="cmsToggle" aria-hidden="true"></span></label></div>`;
+}
 function selectField(label,value,path,options,full=false){
  const opts=options.map(o=>`<option value="${esc(o.value)}" ${String(value||'').toLowerCase()===String(o.value).toLowerCase()?'selected':''}>${esc(o.label)}</option>`).join('');
  return `<div class="cmsField ${full?'full':''}"><label>${label}</label><select data-p="${path}">${opts}</select></div>`;
 }
 function textArea(label,value,path,full=true){return `<div class="cmsField ${full?'full':''}"><label>${label}</label><textarea data-p="${path}">${esc(value??"")}</textarea></div>`}
 function bindInputs(){
- document.querySelectorAll("#cmsPanel [data-p]").forEach(el=>el.oninput=()=>setPath(DATA,el.dataset.p,el.value));
+ document.querySelectorAll("#cmsPanel [data-p]").forEach(el=>{
+   const sync=()=>setPath(DATA,el.dataset.p,el.type==="checkbox"?el.checked:el.value);
+   el.oninput=sync;
+   if(el.type==="checkbox") el.onchange=sync;
+ });
 }
 
 function newExperience(){
@@ -2305,6 +2488,7 @@ function newCaseStudy(){
  return {
   id:"case-"+Date.now(),tint:"#EFF3F0",title:"New Case Study",dotColor:"#0ACF83",highlight:"",category:"design",
   order:arr(DATA.projects).length+1,
+  aiCtaEnabled:false,aiCtaLink:"",
   description:"Add a concise description of the problem, solution and impact.",stickyNote:"",
   caseStudy:{overview:"Add case study overview.",images:[]},
   detailedContent:{overview:"Add the detailed case study story here.",hook:"",before:"",opportunity:"",problem:"",solution:"",whyItWorks:[],impact:[]}
@@ -2364,7 +2548,8 @@ ${textField("What Drives Me heading",DATA.summaryWhatDrivesTitle||"WHAT DRIVES M
  if(editorSelection==="cases"){
    const list=arr(DATA.projects);
    if(!list.length){
-     h=`<div class="cmsCard"><div class="cmsCollectionHead"><div><h3>Case Studies</h3><div class="hint" style="margin:3px 0 0">No case studies yet.</div></div><button class="cmsBtn primary" onclick="addCaseStudy()">＋ Add Case Study</button></div>${jsonTools("projects","All Case Studies")}</div>`;
+     h=`<div class="cmsCard"><div class="cmsCollectionHead"><div><h3>Case Studies</h3>
+<div class="hint" style="margin:3px 0 0">No case studies yet.</div></div><button class="cmsBtn primary" onclick="addCaseStudy()">＋ Add Case Study</button></div>${jsonTools("projects","All Case Studies")}</div>`;
    }else{
      const safeIndex=Math.min(editorCaseIndex,list.length-1);
      editorCaseIndex=safeIndex;
@@ -2381,7 +2566,7 @@ ${textField("What Drives Me heading",DATA.summaryWhatDrivesTitle||"WHAT DRIVES M
          ${jsonTools(`projects.${safeIndex}`,`This Case Study`)}
          <button class="cmsBtn danger" onclick="deleteCaseStudy(${safeIndex})">Delete Case Study</button>
        </div></div>
-       <div class="cmsGrid">${textField("Title",p.title,`projects.${safeIndex}.title`)}${textField("ID",p.id,`projects.${safeIndex}.id`)}${selectField("Work type",String(p.category||p.caseType||"design").toLowerCase()==="ai"?"ai":"design",`projects.${safeIndex}.category`,[{value:"design",label:"Design Work"},{value:"ai",label:"AI Work"}])}${selectField("Display order",String(Number(p.order)||safeIndex+1),`projects.${safeIndex}.order`,Array.from({length:Math.max(list.length,5)},(_,n)=>({value:String(n+1),label:String(n+1)})))}${textField("Highlight / Tag",p.highlight,`projects.${safeIndex}.highlight`)}${textField("Dot color",p.dotColor,`projects.${safeIndex}.dotColor`)}${textField("Card tint",p.tint,`projects.${safeIndex}.tint`)}${textArea("Card description",p.description,`projects.${safeIndex}.description`)}${textField("Sticky note label",DATA.stickyNotes?.[p.id]?.label ?? "",`stickyNotes.${p.id}.label`)}${selectField("Sticky note tone",DATA.stickyNotes?.[p.id]?.tone ?? "yellow",`stickyNotes.${p.id}.tone`,[{value:"yellow",label:"Yellow"},{value:"orange",label:"Orange"}])}${textField("Sticky note text",DATA.stickyNotes?.[p.id]?.text ?? p.stickyNote ?? "",`stickyNotes.${p.id}.text`)}</div>
+       <div class="cmsGrid">${textField("Title",p.title,`projects.${safeIndex}.title`)}${textField("ID",p.id,`projects.${safeIndex}.id`)}${selectField("Work type",String(p.category||p.caseType||"design").toLowerCase()==="ai"?"ai":"design",`projects.${safeIndex}.category`,[{value:"design",label:"Design Work"},{value:"ai",label:"AI Work"}])}${selectField("Display order",String(Number(p.order)||safeIndex+1),`projects.${safeIndex}.order`,Array.from({length:Math.max(list.length,5)},(_,n)=>({value:String(n+1),label:String(n+1)})))}${textField("Highlight / Tag",p.highlight,`projects.${safeIndex}.highlight`)}${textField("Dot color",p.dotColor,`projects.${safeIndex}.dotColor`)}${textField("Card tint",p.tint,`projects.${safeIndex}.tint`)}${textArea("Card description",p.description,`projects.${safeIndex}.description`)}${toggleField("NDA Protected",p.ndaProtected===true,`projects.${safeIndex}.ndaProtected`)}${toggleField("CTA Needed",p.aiCtaEnabled===true,`projects.${safeIndex}.aiCtaEnabled`)}${textField("CTA link",p.aiCtaLink||"",`projects.${safeIndex}.aiCtaLink`)}${textField("Sticky note label",DATA.stickyNotes?.[p.id]?.label ?? "",`stickyNotes.${p.id}.label`)}${selectField("Sticky note tone",DATA.stickyNotes?.[p.id]?.tone ?? "yellow",`stickyNotes.${p.id}.tone`,[{value:"yellow",label:"Yellow"},{value:"orange",label:"Orange"}])}${textField("Sticky note text",DATA.stickyNotes?.[p.id]?.text ?? p.stickyNote ?? "",`stickyNotes.${p.id}.text`)}</div>
      </div>
      <div class="cmsCard"><h3>Case-study overlay content</h3><div class="hint">Import or edit the entire detailedContent object. This is what the center overlay reads.</div>${jsonTools(`projects.${safeIndex}.detailedContent`,"Overlay Content")}${textArea("Detailed content JSON",JSON.stringify(p.detailedContent||{},null,2),"__case_details")}</div>
      <div class="cmsCard"><h3>Case-study summary / metadata</h3>${jsonTools(`projects.${safeIndex}.caseStudy`,"Case Study Metadata")}${textArea("Case Study JSON",JSON.stringify(p.caseStudy||{},null,2),"__case_meta")}</div>
@@ -2929,5 +3114,4 @@ document.addEventListener('click', function(e){
   }
 })();
 </script>
-
 </body></html>
