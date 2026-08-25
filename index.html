@@ -1774,18 +1774,10 @@ function renderCore(){
   {headerStatValue:DATA.stats?.averageSprintDelivery,headerStatLabel:'Avg. Sprint Delivery'}
  ];
  let headerStats=(statList.length?statList:legacyStats).slice(0,3).filter(x=>x&&(x.headerStatValue!=null||x.value!=null));
- // Never display years-of-experience in the portfolio header; show age instead.
- let ageShown=false;
- headerStats=headerStats.map(x=>{
-   const label=String(x.headerStatLabel??x.label??'');
-   const value=String(x.headerStatValue??x.value??'');
-   if(/years?\s*(of\s*)?experience/i.test(label) || /10\.1\+?/.test(value)){
-     ageShown=true;
-     return {headerStatValue:'32',headerStatLabel:'Age'};
-   }
-   return x;
- });
- if(!ageShown) headerStats=[{headerStatValue:'32',headerStatLabel:'Age'},...headerStats].slice(0,3);
+ // Header stats are fully controlled by DATA.stats.
+let headerStats=statList
+  .filter(x=>x&&(x.headerStatValue!=null||x.value!=null))
+  .slice(0,3);
  document.getElementById('heroStats').innerHTML=headerStats.map(x=>`<div class="stat"><b>${esc(x.headerStatValue??x.value??'')}</b><span>${esc(x.headerStatLabel??x.label??'')}</span></div>`).join('');
  const edu=arr(DATA.education); const first=edu[0]||{}; const sk=DATA.skills||{};
  const cards=[`<div class="skillCard"><h3>Education</h3><p style="font-size:11px;color:#64706b">${esc(first.degree||'')}</p><p style="font-size:10px;color:#89928e">${esc(first.school||'')} · ${esc(first.year||'')}</p></div>`];
