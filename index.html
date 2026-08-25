@@ -1768,17 +1768,17 @@ function renderCore(){
  document.getElementById('heroRole').textContent=DATA.role||'';
  document.getElementById('heroDesc').textContent='I design enterprise SaaS products that solve complex problems, delight users, and drive real business impact.';
  const statList=Array.isArray(DATA.stats)?DATA.stats:(Array.isArray(DATA.stats?.items)?DATA.stats.items:[]);
- const legacyStats=[
-  {headerStatValue:DATA.stats?.yearsExperience,headerStatLabel:'Years Experience'},
-  {headerStatValue:DATA.stats?.productsDesigned,headerStatLabel:'Products Designed'},
-  {headerStatValue:DATA.stats?.averageSprintDelivery,headerStatLabel:'Avg. Sprint Delivery'}
- ];
- let headerStats=(statList.length?statList:legacyStats).slice(0,3).filter(x=>x&&(x.headerStatValue!=null||x.value!=null));
- // Header stats are fully controlled by DATA.stats.
-let headerStats=statList
-  .filter(x=>x&&(x.headerStatValue!=null||x.value!=null))
-  .slice(0,3);
- document.getElementById('heroStats').innerHTML=headerStats.map(x=>`<div class="stat"><b>${esc(x.headerStatValue??x.value??'')}</b><span>${esc(x.headerStatLabel??x.label??'')}</span></div>`).join('');
+ const headerStats = statList
+  .filter(x => x && (x.headerStatValue != null || x.value != null))
+  .slice(0, 3);
+
+document.getElementById('heroStats').innerHTML =
+  headerStats.map(x =>
+    `<div class="stat">
+      <b>${esc(x.headerStatValue ?? x.value ?? '')}</b>
+      <span>${esc(x.headerStatLabel ?? x.label ?? '')}</span>
+    </div>`
+  ).join('');
  const edu=arr(DATA.education); const first=edu[0]||{}; const sk=DATA.skills||{};
  const cards=[`<div class="skillCard"><h3>Education</h3><p style="font-size:11px;color:#64706b">${esc(first.degree||'')}</p><p style="font-size:10px;color:#89928e">${esc(first.school||'')} · ${esc(first.year||'')}</p></div>`];
  cards.push(`<div class="skillCard otherCoursesCard"><h3>Other Courses</h3><div class="courseItems"><div class="courseItem"><strong>British Council</strong><p>English Impact course at Upper Intermediate level, certified by the British Council.</p></div><div class="courseItem"><strong>Product Development</strong><p>Secured first position at the Mission Design Discovery Conference by INSAID on Product Development.</p></div></div></div>`); const labels={tools:'Tools',design:'Design'}; Object.entries(labels).forEach(([key,label])=>{cards.push(`<div class="skillCard"><h3>${label}</h3><div class="chips">${arr(sk[key]).map(x=>`<span class="chip">${esc(x)}</span>`).join('')}</div></div>`)});
