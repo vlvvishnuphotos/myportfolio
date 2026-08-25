@@ -1948,9 +1948,7 @@ function workVisual(p){
   }
 
   function workCard(p,index,total){
-    const isPortal=String(p.category||'').toLowerCase()==='ai';
-    const isF2F=p.id==='f2f';
-    const sticky=(isF2F||p.id==='portal') ? (DATA.stickyNotes?.[isF2F?'f2f':'portal']||{}) : null;
+   const sticky = DATA.stickyNotes?.[p.id] || null;
     const positions=total===1?['is-front']:total===2?['pos-left','pos-right']:total===3?['pos-left','is-front','pos-right']:total===5?['pos-left','is-front','pos-right','pos-farright','pos-farleft']:['pos-farleft','pos-left','is-front','pos-right'];
     return `
       <article class="workCard ${positions[index]||''}" data-work-id="${esc(p.id)}" tabindex="0" role="button" aria-label="Open ${esc(p.title||'case study')}">
@@ -2306,20 +2304,6 @@ window.loadPortfolioFromSupabase=async function(){
     });
 
     DATA.stickyNotes=DATA.stickyNotes||{};
-    /* Keep the portfolio sticky notes understandable even without project context. */
-    DATA.stickyNotes.f2f={
-      ...(typeof DATA.stickyNotes.f2f==='object' ? DATA.stickyNotes.f2f : {}),
-      label:'Small win',
-      text:'A small improvement can make a big difference.',
-      tone:'orange'
-    };
-    DATA.stickyNotes.portal={
-      ...(typeof DATA.stickyNotes.portal==='object' ? DATA.stickyNotes.portal : {}),
-      label:'Simple idea',
-      text:'Bring the important things together.',
-      tone:'yellow'
-    };
-
     /* Replace project-specific floating notes with short, universal examples. */
     DATA.settings=DATA.settings||{};
     DATA.settings.sideNotes=[
